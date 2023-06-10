@@ -22,7 +22,7 @@ export const CreateAndViewAsset = () => {
                         playbackPolicy: {
                             type: 'webhook',
                             // This is the id of the webhook you created in step 2
-                            webhookId: 'a517acce-4836-42ec-b543-ab3a78e471cd',
+                            webhookId: 'f1ed1ce1-087a-49d1-830b-e3c734b3fc30',
                             webhookContext: {
                                 // This is the context you want to pass to your webhook
                                 // It can be anything you want, and it will be passed back to your webhook
