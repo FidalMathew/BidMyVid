@@ -1,5 +1,5 @@
 import { useCreateAsset } from '@livepeer/react';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { useCallback, useState, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -22,10 +22,12 @@ export const CreateAndViewAsset = () => {
                         playbackPolicy: {
                             type: 'webhook',
                             // This is the id of the webhook you created in step 2
-                            webhookId: '<webhook_id>',
+                            webhookId: 'a517acce-4836-42ec-b543-ab3a78e471cd',
                             webhookContext: {
                                 // This is the context you want to pass to your webhook
                                 // It can be anything you want, and it will be passed back to your webhook
+                                assetId: "abcd1234",
+                                userId: "user5678"
                             },
                         },
                     },
@@ -41,9 +43,6 @@ export const CreateAndViewAsset = () => {
     }, []);
 
     const { getRootProps, getInputProps } = useDropzone({
-        accept: {
-            'video/*': ['*.mp4'],
-        },
         maxFiles: 1,
         onDrop,
     });

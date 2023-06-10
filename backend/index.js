@@ -11,6 +11,10 @@ app.post('/api/check-access', (req, res) => {
     const { accessKey, context, timeStamp } = req.body;
     const assetId = context.assetId;
     const userId = context.userId;
+    console.log(`accessKey: ${accessKey}`);
+    console.log(`assetId: ${assetId}`);
+    console.log(`userId: ${userId}`);
+    console.log(`timeStamp: ${timeStamp}`);
 
     res.status(200).send('Data received successfully.');
 })
