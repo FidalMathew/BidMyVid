@@ -8,6 +8,7 @@ import {
 } from '@livepeer/react';
 import { Livepeer } from './pages/Livepeer';
 import { CreateAndViewAsset } from './components/CreateAndViewAsset';
+import { AccessPlayer } from './pages/AccessPlayer';
 
 const VITE_LIVEPEER_STUDIO_API_KEY = import.meta.env.VITE_LIVEPEER_STUDIO_API_KEY;
 
@@ -32,6 +33,7 @@ function App() {
     <LivepeerConfig client={client} theme={livepeerTheme}>
       {/* <Livepeer /> */}
       <CreateAndViewAsset />
+      <AccessPlayer />
     </LivepeerConfig>
   );
 }

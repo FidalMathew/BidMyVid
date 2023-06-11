@@ -60,6 +60,7 @@ export const CreateAndViewAsset = () => {
                             : null,
         [progress],
     );
+    console.log(asset)
 
     return (
         <>
