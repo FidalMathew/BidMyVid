@@ -43,6 +43,9 @@ const Navbar = () => {
                     </Link>
                     <Spacer />
                     <HStack spacing={3}>
+                        <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/earning')}>
+                            Your Earning
+                        </Button>
                         <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/create')}>
                             Create
                         </Button>

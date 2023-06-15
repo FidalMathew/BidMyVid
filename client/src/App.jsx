@@ -19,6 +19,7 @@ import authStore from './stores/authStore';
 import { useEffect } from 'react';
 import Videopage from './components/Videopage';
 import Profilepage from './pages/Profilepage';
+import Earning from './pages/Earning';
 
 const VITE_LIVEPEER_STUDIO_API_KEY = import.meta.env.VITE_LIVEPEER_STUDIO_API_KEY;
 
@@ -62,6 +63,7 @@ function App() {
           <Route path="/create" element={<Create apiKey={VITE_PINATA_API_KEY} secretKey={VITE_PINATA_SECRET_API_KEY} />} />
           <Route path="/videos/:id" element={<Videopage />} />
           <Route path="/profile" element={<Profilepage />} />
+          <Route path="/earning" element={<Earning />} />
         </Routes>
       </BrowserRouter>
     </LivepeerConfig>

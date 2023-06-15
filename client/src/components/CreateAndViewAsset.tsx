@@ -192,7 +192,9 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                     {(formik) => (
                         <form onSubmit={formik.handleSubmit} style={{ width: '60%' }}>
                             <VStack spacing={10} m="auto">
-                                <FormControl>
+                                <FormControl
+                                    isInvalid={!!formik.errors.name && formik.touched.name}
+                                >
                                     <FormLabel htmlFor="name">Name</FormLabel>
                                     <Field
                                         name="name"
@@ -203,7 +205,11 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                                     />
                                     <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
                                 </FormControl>
-                                <FormControl>
+                                <FormControl
+                                    isInvalid={
+                                        !!formik.errors.description && formik.touched.description
+                                    }
+                                >
                                     <FormLabel htmlFor="description">Description</FormLabel>
                                     <Field
                                         name="description"
