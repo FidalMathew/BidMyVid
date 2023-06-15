@@ -1,3 +1,4 @@
+import { Box, Button, Text } from '@chakra-ui/react';
 import { useCreateAsset } from '@livepeer/react';
 import React, { ChangeEvent } from 'react';
 
@@ -64,24 +65,24 @@ export const CreateAndViewAsset = () => {
 
     return (
         <>
-            <div {...getRootProps()}>
+            <Box {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p>Drag and drop or browse files</p>
-            </div>
+                <Text>Drag and drop or browse files</Text>
+            </Box>
 
-            {createError?.message && <p>{createError.message}</p>}
+            {createError?.message && <Text>{createError.message}</Text>}
 
-            {video ? <p>{video.name}</p> : <p>Select a video file to upload.</p>}
-            {progressFormatted && <p>{progressFormatted}</p>}
+            {video ? <Text>{video.name}</Text> : <Text>Select a video file to upload.</Text>}
+            {progressFormatted && <Text>{progressFormatted}</Text>}
 
-            <button
+            <Button
                 onClick={() => {
                     createAsset?.();
                 }}
                 disabled={!createAsset || createStatus === 'loading'}
             >
                 Upload
-            </button>
+            </Button>
         </>
     );
 };
