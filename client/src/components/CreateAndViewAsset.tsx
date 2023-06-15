@@ -1,12 +1,22 @@
 import { Box, Button, Text } from '@chakra-ui/react';
 import { useCreateAsset } from '@livepeer/react';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 
 import { useCallback, useState, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
+import axios from 'axios';
+import authStore from '../stores/authStore';
 
-export const CreateAndViewAsset = () => {
+
+export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
     const [video, setVideo] = useState<File | undefined>();
+    const [nftName, setNftName] = useState<string | undefined>();
+    const [nftDescription, setNftDescription] = useState<string | undefined>();
+
+    console.log(apiKey, secretKey)
+    const s = authStore()
+
+
     const {
         mutate: createAsset,
         data: asset,
@@ -27,8 +37,6 @@ export const CreateAndViewAsset = () => {
                             webhookContext: {
                                 // This is the context you want to pass to your webhook
                                 // It can be anything you want, and it will be passed back to your webhook
-                                assetId: "abcd1234",
-                                userId: "user5678"
                             },
                         },
                     },
@@ -61,7 +69,48 @@ export const CreateAndViewAsset = () => {
                             : null,
         [progress],
     );
-    console.log(asset)
+
+    useEffect(() => {
+        console.log(asset)
+        if (asset && asset[0] && asset[0].playbackId && nftName && nftDescription && apiKey && secretKey) {
+            // setPlaybackId(asset[0].playbackId)
+            const sendJSONtoIPFS = async () => {
+
+                try {
+
+                    const resJSON = await axios({
+                        method: "post",
+                        url: "https://api.pinata.cloud/pinning/pinJsonToIPFS",
+                        data: {
+                            "name": nftName,
+                            "description": nftDescription,
+                            "animation_url": asset[0].playbackUrl,
+                            "external_url": asset[0].playbackUrl,
+                            "image": "ipfs://bafkreidmlgpjoxgvefhid2xjyqjnpmjjmq47yyrcm6ifvoovclty7sm4wm",
+                            "properties": {
+                                "com.livepeer.playbackId": asset[0].playbackId,
+                                "video": asset[0].playbackUrl,
+                            }
+                        },
+                        headers: {
+                            'pinata_api_key': `${apiKey}`,
+                            'pinata_secret_api_key': `${secretKey}`,
+                        },
+                    });
+
+                    const tokenURI = `ipfs://${resJSON.data.IpfsHash}`;
+                    console.log("Token URI", tokenURI);
+                    // mintNFT(tokenURI, s.address)   
+
+                } catch (error) {
+                    console.log("JSON to IPFS: ")
+                    console.log(error);
+                }
+            }
+            sendJSONtoIPFS()
+        }
+    }, [asset])
+
 
     return (
         <>
@@ -75,6 +124,8 @@ export const CreateAndViewAsset = () => {
             {video ? <Text>{video.name}</Text> : <Text>Select a video file to upload.</Text>}
             {progressFormatted && <Text>{progressFormatted}</Text>}
 
+            <input type="text" placeholder='name of Video NFT' onChange={(event) => setNftName(event.target.value)} />
+            <input type="text" placeholder='description of Video NFT' onChange={(event) => setNftDescription(event.target.value)} />
             <Button
                 onClick={() => {
                     createAsset?.();

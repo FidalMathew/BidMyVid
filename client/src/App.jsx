@@ -21,6 +21,9 @@ import Videopage from './components/Videopage';
 import Profilepage from './pages/Profilepage';
 
 const VITE_LIVEPEER_STUDIO_API_KEY = import.meta.env.VITE_LIVEPEER_STUDIO_API_KEY;
+
+const VITE_PINATA_API_KEY = import.meta.env.VITE_PINATA_API_KEY || '';
+const VITE_PINATA_SECRET_API_KEY = import.meta.env.VITE_PINATA_SECRET_API_KEY || '';
 // console.log('VITE_LIVEPEER_STUDIO_API_KEY', VITE_LIVEPEER_STUDIO_API_KEY);
 
 const clientLivepeer = createReactClient({
@@ -56,7 +59,7 @@ function App() {
         <Routes>
           <Route index element={<RequireAuth element={<Home />} />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/create" element={<Create />} />
+          <Route path="/create" element={<Create apiKey={VITE_PINATA_API_KEY} secretKey={VITE_PINATA_SECRET_API_KEY} />} />
           <Route path="/videos/:id" element={<Videopage />} />
           <Route path="/profile" element={<Profilepage />} />
         </Routes>

@@ -1,10 +1,11 @@
 import React from 'react'
 import { CreateAndViewAsset } from '../components/CreateAndViewAsset'
 
-const Create = () => {
+const Create = ({ apiKey, secretKey }) => {
+    // console.log(apiKey, secretKey)
     return (
         <>
-            <CreateAndViewAsset />
+            <CreateAndViewAsset apiKey={apiKey} secretKey={secretKey} />
         </>
 
     )
