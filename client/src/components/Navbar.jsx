@@ -4,31 +4,28 @@ import {
     Avatar,
     Button,
     HStack,
-    VStack,
-    Image,
-    Input,
     Spacer,
     Menu,
     MenuButton,
     MenuList,
     MenuItem,
     Text,
-    Link,
+    Link as ChakraLink,
     MenuDivider,
-    useColorModeValue
 } from '@chakra-ui/react';
 import ToggleTheme from './Toggletheme';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 const Navbar = () => {
-
+    const navigate = useNavigate()
     return (
         <Box
             py="2"
             boxShadow="sm"
             border="0 solid #e5e7eb"
-            position="fixed"
-            top="0"
+            // position="fixed"
+            // top="0"
             // bg={useColorModeValue('gray.50', 'gray.700')}
             width="100%"
             zIndex="1"
@@ -41,11 +38,13 @@ const Navbar = () => {
                         h={12}
                         src="https://dev-to-uploads.s3.amazonaws.com/uploads/logos/resized_logo_UQww2soKuUsjaOGNB38o.png"
                     /> */}
-                    <Text w={'auto'} h={12} fontSize="2xl" fontWeight="bold" color="teal.500">Steal Videos</Text>
+                    <Link to="/">
+                        <Text w={'auto'} h={12} fontSize="2xl" fontWeight="bold" color="teal.500">Steal Videos</Text>
+                    </Link>
                     <Spacer />
                     <HStack spacing={3}>
-                        <Button colorScheme="teal" variant="outline" size="sm">
-                            Connect Wallet
+                        <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/create')}>
+                            Create
                         </Button>
                         <Menu isLazy>
                             <MenuButton as={Button} size="sm" px={0} py={0} rounded="full">
@@ -53,12 +52,12 @@ const Navbar = () => {
                             </MenuButton>
                             <MenuList
                                 zIndex={5}
-                                // border="2px solid"
-                                // borderColor={useColorModeValue('gray.700', 'gray.100')}
-                                // boxShadow="4px 4px 0"
+                            // border="2px solid"
+                            // borderColor={useColorModeValue('gray.700', 'gray.100')}
+                            // boxShadow="4px 4px 0"
                             >
                                 <MenuItem>
-                                    <Text fontWeight="500">Profile</Text>
+                                    <Text fontWeight="500" onClick={() => navigate('/profile')}>Profile</Text>
                                 </MenuItem>
                                 <MenuDivider />
                                 <MenuItem>

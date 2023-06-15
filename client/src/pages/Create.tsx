@@ -3,9 +3,10 @@ import { CreateAndViewAsset } from '../components/CreateAndViewAsset'
 
 const Create = () => {
     return (
-        <div>
+        <>
             <CreateAndViewAsset />
-        </div>
+        </>
+
     )
 }
 
