@@ -1,39 +1,50 @@
-import { useAccount, useConnect, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
+
+import { BrowserProvider } from 'ethers';
+import { useState } from 'react';
+// import { SiweMessage } from 'siwe';
 
 function Profile() {
-    const { address, isConnected } = useAccount()
 
-    const { data, isError, isLoading } = useEnsAvatar({
-        address: address,
-    })
+    const domain = window.location.host;
+    const origin = window.location.origin;
+    const provider = new BrowserProvider(window.ethereum);
 
-    if (isLoading)
-        console.log('isLoading', isLoading);
-    if (isError)
-        console.log('isError', isError);
+    const BACKEND_ADDR = "http://localhost:5000";
 
-    // const add = '0xecC6E5aA22E2Bb7aDD9296e5E7113E1A44C4D736'
-    const { data: ensName } = useEnsName({ address })
-    const { connect } = useConnect({
-        connector: new InjectedConnector(),
-    })
-    const { disconnect } = useDisconnect()
+    // async function createSiweMessage(address, statement) {
+    //     const res = await fetch(`${BACKEND_ADDR}/nonce`);
+    //     const message = new SiweMessage({
+    //         domain,
+    //         address,
+    //         statement,
+    //         uri: origin,
+    //         version: '1',
+    //         chainId: '1',
+    //         nonce: await res.text()
+    //     });
+    //     return message.prepareMessage();
+    // }
 
-    // if (isConnected) return <div>Connected to {ensName ?? address}</div>
+    const [account, setAccount] = useState(null);
+
+    async function connectWallet() {
+
+        const account = await provider.send('eth_requestAccounts', [])
+            .catch(() => console.log('user rejected request'));
+        console.log(account);
+        setAccount(account);
+
+    }
+
     return (
-        <div>{
-            isConnected ? (
-                <>
-                    <div>Connected to {ensName ?? address}</div>
-
-                    {/* <div>Avatar: {data}</div> */}
-                    <button onClick={() => disconnect()}>Disconnect Wallet</button>
-                </>
-            )
-                : < button onClick={() => connect()} > Connect Wallet</button >
-
-        }
+        <div>
+            {
+                account ? account :
+                    <button onClick={connectWallet}>Connect Wallet</button>
+            }
+            {/*    <button onClick={signInWithEthereum}>Sign in with Ethereum</button>
+            <button onClick={sendForVerification}>Send for verification</button> */}
+            Hello
         </div >
     )
 

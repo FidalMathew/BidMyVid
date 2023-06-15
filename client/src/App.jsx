@@ -8,11 +8,15 @@ import {
 } from '@livepeer/react';
 // import { Livepeer } from './pages/Livepeer';
 // import { CreateAndViewAsset } from './components/CreateAndViewAsset';
-import { AccessPlayer } from './pages/AccessPlayer';
-
-import { WagmiConfig, createClient, configureChains, mainnet } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
-import Profile from './pages/Profile';
+// import { AccessPlayer } from './pages/AccessPlayer';
+// import Profile from './pages/Profile';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Create from './pages/Create';
+import RequireAuth from './components/RequireAuth'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import authStore from './stores/authStore';
+import { useEffect } from 'react';
 
 const VITE_LIVEPEER_STUDIO_API_KEY = import.meta.env.VITE_LIVEPEER_STUDIO_API_KEY;
 // console.log('VITE_LIVEPEER_STUDIO_API_KEY', VITE_LIVEPEER_STUDIO_API_KEY);
@@ -31,29 +35,29 @@ const livepeerTheme = {
   },
 };
 
-const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet],
-  [publicProvider()],
-)
 
-
-const client = createClient({
-  autoConnect: true,
-  provider,
-  webSocketProvider,
-})
 
 
 function App() {
+
+  const s = authStore()
+
+  useEffect(() => {
+    if (s) {
+      s.init()
+    }
+  }, [])
+
   return (
-    <WagmiConfig client={client}>
-      <LivepeerConfig client={clientLivepeer} theme={livepeerTheme}>
-        {/* <Livepeer /> */}
-        {/* <CreateAndViewAsset /> */}
-        <Profile />
-        <AccessPlayer />
-      </LivepeerConfig>
-    </WagmiConfig>
+    <LivepeerConfig client={clientLivepeer} theme={livepeerTheme}>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<RequireAuth element={<Home />} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/create" element={<Create />} />
+        </Routes>
+      </BrowserRouter>
+    </LivepeerConfig>
   );
 }
 export default App
