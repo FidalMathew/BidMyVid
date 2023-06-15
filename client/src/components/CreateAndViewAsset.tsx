@@ -150,8 +150,8 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
 
     return (
         <>
-            <VStack justifyContent="center" alignItems="center" align={"left"} minH="100vh" p="10" align={"left"}>
-                <HStack align={"left"}>
+            <VStack justifyContent="center" alignItems="center" align={"left"} minH="100vh" p="10">
+                <HStack>
                     <Icon as={FiArrowLeft} onClick={() => {
                         navigate(-1)
                     }} cursor={"pointer"} />
