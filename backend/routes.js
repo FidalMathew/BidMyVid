@@ -9,7 +9,7 @@ const StealVideo = require("./models/steal")
 // Auth
 router.get('/api/nonce', authController.Nonce)
 router.post('/api/verify', authController.Verify)
-router.get('/api/validate', requireAuth, authController.Validate)
+router.post('/api/validate', authController.Validate)
 
 router.post('/api/check-access', async (req, res) => {
   try {

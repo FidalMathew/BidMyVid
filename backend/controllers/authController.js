@@ -33,9 +33,18 @@ async function Verify(req, res) {
 
 }
 
-function Validate(req, res) {
-  if (req.session.siwe && req.session.siwe.address) {
-    res.json({ address: req.session.siwe.address })
+async function Validate(req, res) {
+  const { wallet, signature } = req.body;
+  try {
+    const existingObject = await StealVideo.findOne({ wallet: wallet, signature: signature })
+    if (existingObject) {
+      return res.status(200).json("Data Verified succesfully")
+    } else {
+      return res.status(422).json({ message: "Invalid Access" })
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(422).json({ message: "Invalid wallet or signature" })
   }
 }
 

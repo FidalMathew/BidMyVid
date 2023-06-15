@@ -39,15 +39,22 @@ export const authStore = create<TAuthStore>((set) => ({
 
       if (accounts[0]) {
         set({ ready: true, address: accounts[0] })
+
+        if (sig) {
+          set({ signatureStore: sig })
+          const res2 = await axios.post(backend_url + '/api/validate', { signature: sig, wallet: accounts[0] })
+          console.log(res2)
+          if (res2.status == 200) {
+            set({ loggedIn: true })
+          }
+        }
+
+
+
       } else {
         set({ ready: true })
       }
 
-      if (sig) {
-        set({ ready: true, signatureStore: sig })
-      }
-      else
-        set({ loggedIn: false, ready: true })
     } catch (err) {
       console.log(err)
     }
