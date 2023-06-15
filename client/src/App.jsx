@@ -17,6 +17,7 @@ import RequireAuth from './components/RequireAuth'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import authStore from './stores/authStore';
 import { useEffect } from 'react';
+import Videopage from './components/Videopage';
 
 const VITE_LIVEPEER_STUDIO_API_KEY = import.meta.env.VITE_LIVEPEER_STUDIO_API_KEY;
 // console.log('VITE_LIVEPEER_STUDIO_API_KEY', VITE_LIVEPEER_STUDIO_API_KEY);
@@ -55,6 +56,7 @@ function App() {
           <Route index element={<RequireAuth element={<Home />} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<Create />} />
+          <Route path="/videos/:id" element={<Videopage />} />
         </Routes>
       </BrowserRouter>
     </LivepeerConfig>
