@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import authStore from '../stores/authStore'
+import { Box, Button } from '@chakra-ui/react'
 
 export default function Login() {
     const s = authStore()
@@ -8,16 +9,16 @@ export default function Login() {
     if (s.loggedIn) return <Navigate to="/" />
 
     return (
-        <div>
+        <Box minH="100vh">
             {s.address === '' ? (
                 <>
-                    <button onClick={s.connectWallet}>Connect wallet</button>
+                    <Button onClick={s.connectWallet}>Connect wallet</Button>
                 </>
             ) : (
                 <>
-                    <button onClick={s.signin}>Sign in</button>
+                    <Button onClick={s.signin}>Sign in</Button>
                 </>
             )}
-        </div>
+        </Box>
     )
 }

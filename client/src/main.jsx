@@ -4,9 +4,12 @@ import App from './App.jsx'
 import './index.css'
 import { Buffer } from 'buffer';
 Buffer.from('anything', 'base64');
+import { ChakraProvider } from '@chakra-ui/react'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <ChakraProvider>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </ChakraProvider>
 )
