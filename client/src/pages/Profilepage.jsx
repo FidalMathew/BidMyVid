@@ -1,7 +1,10 @@
 import { Avatar, Box, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
+import { Contract } from "../initializers/ethers"
 
 const Profilepage = () => {
+
+    console.log(Contract)
     return (
         <VStack>
             <Navbar />

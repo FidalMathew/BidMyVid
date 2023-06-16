@@ -10,6 +10,9 @@ import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { Contract } from "../initializers/ethers"
+import { ethers } from 'ethers';
+import { toWei, fromWei } from '../initializers/ethers';
 
 export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
     const [video, setVideo] = useState<File | undefined>();
@@ -87,6 +90,30 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
 
 
 
+    const mintNFT = async (tokenURI: string) => {
+        tokenURI = "ipfs://Qmf63GagKDXq2KfyFKuJ7k8CGEPJCG2xYNCeXhM2sy6c8A"
+        const image = "ipfs://bafkreidmlgpjoxgvefhid2xjyqjnpmjjmq47yyrcm6ifvoovclty7sm4wm"
+        // const price = ethers.utils.parseEther("0.002")
+        let price: number = 0.002;
+        const listingPrice = await Contract.getListingPrice()
+        console.log(listingPrice.toString())
+        console.log("nftName", "nftDescription", image, tokenURI, toWei(price))
+
+        const tx = await Contract.createAuction(
+            "nftName-1", "nftDescription-1",
+            image,
+            tokenURI,
+            toWei(price),
+            {
+                from: s.address,
+                value: toWei(0.02),
+            },
+        )
+        await tx.wait()
+        console.log(tx)
+    }
+
+
     useEffect(() => {
         console.log(asset)
         if (asset && asset[0] && asset[0].playbackId && nftName && nftDescription && apiKey && secretKey) {
@@ -116,7 +143,7 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
 
                     const tokenURI = `ipfs://${resJSON.data.IpfsHash}`;
                     console.log("Token URI", tokenURI);
-                    // mintNFT(tokenURI, s.address)   
+                    mintNFT(tokenURI);
 
                 } catch (error) {
                     console.log("JSON to IPFS: ")
@@ -173,6 +200,7 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                 <Heading as="h1" size="xl" mb="4">
                     Create an NFT
                 </Heading>
+                <button onClick={() => mintNFT("")}>Mint NFT </button>
                 <Formik
                     initialValues={{ name: '', description: '' }}
                     validationSchema={Yup.object({

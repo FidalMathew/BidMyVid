@@ -1,22 +1,21 @@
-// import React from "react";
-// import { AccessPlayer } from "../components/AccessPlayer";
-// export default function Home() {
-
-//     return (<div style={{ height: "50vh", width: "auto", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10vh" }}>
-//         <AccessPlayer />
-
-//     </div>);
-
-// }
-
-
 import { Box, Text, VStack } from "@chakra-ui/react"
 import Cards from "../components/Cards"
 import ToggleTheme from "../components/Toggletheme"
 import Navbar from "../components/Navbar"
 import * as React from 'react'
 
+import { Contract } from "../initializers/ethers"
+
 const Homecomponent = () => {
+
+    React.useEffect(() => {
+        const getAllAuctions = async () => {
+            const res = await Contract.getAllAuctions()
+            console.log(res)
+        }
+        getAllAuctions()
+    }, [Contract])
+
     return (
         <>
             <Navbar />
