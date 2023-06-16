@@ -59,8 +59,8 @@ const Navbar = () => {
                             // borderColor={useColorModeValue('gray.700', 'gray.100')}
                             // boxShadow="4px 4px 0"
                             >
-                                <MenuItem>
-                                    <Text fontWeight="500" onClick={() => navigate('/profile')}>Profile</Text>
+                                <MenuItem onClick={() => navigate('/profile')}>
+                                    <Text fontWeight="500" >Profile</Text>
                                 </MenuItem>
                                 <MenuDivider />
                                 <MenuItem>

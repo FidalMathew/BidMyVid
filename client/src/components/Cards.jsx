@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { AccessPlayer } from './AccessPlayer';
 import Navbar from './Navbar';
 
-const Cards = () => {
+const Cards = ({auctionItem}) => {
     const navigate = useNavigate()
     return (
         <>
@@ -55,15 +55,14 @@ const Cards = () => {
                                 mb={2}
                                 textAlign={"center"}
                             >
-                                How to customize your Github Profile
+                                {auctionItem.name}
                             </chakra.h3>
                             <Text fontSize={{ base: 'md', sm: 'lg' }} noOfLines={2}>
-                                How to customize your Github Profile Neque porro quisquam est qui dolorem ipsum quia
-                                dolor sit amet, consectetur, adipisci velit...
+                                {auctionItem.description}
                             </Text>
                             <Text fontSize={{ base: 'sm', sm: 'md' }} noOfLines={2}>
-                                by <chakra.span fontWeight="bold">John Doe</chakra.span> |{' '}
-                                <chakra.span fontWeight="bold">Oct 16, 2020</chakra.span>
+                                by <chakra.span fontWeight="bold">{auctionItem.owner}</chakra.span> |{' '}
+                                <chakra.span fontWeight="bold">{auctionItem.endTime}</chakra.span>
                             </Text>
                         </VStack>
                         <Stack
