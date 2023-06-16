@@ -62,7 +62,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<Create apiKey={VITE_PINATA_API_KEY} secretKey={VITE_PINATA_SECRET_API_KEY} />} />
           <Route path="/videos/:id" element={<Videopage />} />
-          <Route path="/profile" element={<Profilepage />} />
+          <Route path="/profile/:id" element={<Profilepage />} />
           <Route path="/earning" element={<Earning />} />
         </Routes>
       </BrowserRouter>

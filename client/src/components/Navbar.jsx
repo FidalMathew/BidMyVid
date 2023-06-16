@@ -15,10 +15,12 @@ import {
 } from '@chakra-ui/react';
 import ToggleTheme from './Toggletheme';
 import { useNavigate, Link } from 'react-router-dom';
+import authStore from '../stores/authStore';
 
 
 const Navbar = () => {
     const navigate = useNavigate()
+    const s=authStore();
     return (
         <Box
             py="2"
@@ -59,7 +61,7 @@ const Navbar = () => {
                             // borderColor={useColorModeValue('gray.700', 'gray.100')}
                             // boxShadow="4px 4px 0"
                             >
-                                <MenuItem onClick={() => navigate('/profile')}>
+                                <MenuItem onClick={() => navigate('/profile'+'/'+s.address.toLowerCase())}>
                                     <Text fontWeight="500" >Profile</Text>
                                 </MenuItem>
                                 <MenuDivider />

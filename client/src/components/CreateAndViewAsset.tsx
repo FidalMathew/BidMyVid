@@ -91,16 +91,17 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
 
 
     const mintNFT = async (tokenURI: string) => {
-        tokenURI = "ipfs://Qmf63GagKDXq2KfyFKuJ7k8CGEPJCG2xYNCeXhM2sy6c8A"
-        const image = "ipfs://bafkreidmlgpjoxgvefhid2xjyqjnpmjjmq47yyrcm6ifvoovclty7sm4wm"
+        if (!asset || !asset[0] || !asset[0].playbackUrl) return;
+
+        const image = asset[0].playbackUrl
         // const price = ethers.utils.parseEther("0.002")
         let price: number = 0.002;
         const listingPrice = await Contract.getListingPrice()
         console.log(listingPrice.toString())
-        console.log("nftName", "nftDescription", image, tokenURI, toWei(price))
+        console.log(nftName, nftDescription, image, tokenURI, toWei(price))
 
         const tx = await Contract.createAuction(
-            "nftName-1", "nftDescription-1",
+            nftName, nftDescription,
             image,
             tokenURI,
             toWei(price),
