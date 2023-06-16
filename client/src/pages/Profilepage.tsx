@@ -10,7 +10,7 @@ import { MdMoney } from "react-icons/md"
 
 const Profilepage = () => {
     const { id } = useParams();
-    const convertDateAndTime = (timestamp) => {
+    const convertDateAndTime = (timestamp: any) => {
         const decimalTimestamp = parseInt(timestamp.substring(2), 16);
         const date = new Date(decimalTimestamp * 1000);
         const year = date.getFullYear();
@@ -25,10 +25,15 @@ const Profilepage = () => {
         return formattedDateTime;
     };
     console.log(id)
-    const [auctionitems, setAuctionItems] = React.useState([])
+    const [holdings, setHoldings] = React.useState([])
+    const [auctions, setAuctions] = React.useState([])
+
+    const [update, setUpdate] = React.useState(true)
+
     React.useEffect(() => {
         const getAllAuctions = async () => {
-            let arr: any = [];
+            let holdArr: any = [];
+            let auctionArr: any = [];
             const res = await Contract.getAllAuctions()
             res.map((item: any) => {
                 console.log(item.owner.toLowerCase(), "debugging  ")
@@ -47,19 +52,24 @@ const Profilepage = () => {
                         tokenId: Number(item.tokenId),
                         winner: item.winner,
                     }
-                    arr.push(values);
+                    if (item.live == false)
+                        holdArr.push(values);
+                    else
+                        auctionArr.push(values);
                 }
 
             })
-            console.log(arr)
-            setAuctionItems(arr)
+            // console.log(arr)
+            setHoldings(holdArr)
+            setAuctions(auctionArr)
         }
         getAllAuctions()
-    }, [Contract, id])
+    }, [Contract, id, update])
 
-    const offerAuction = async (tokenId) => {
+    const offerAuction = async (tokenId: number) => {
         const res = await Contract.offerAuction(tokenId, true);
         await res.wait()
+        setUpdate(!update)
         console.log(res)
     }
 
@@ -73,7 +83,8 @@ const Profilepage = () => {
                     <Avatar size="2xl" src={'https://avatars2.githubusercontent.com/u/37842853?v=4'} />
                     <VStack align={"left"} spacing="0">
                         <Box fontWeight="bold">Fidal Mathew</Box>
-                        <Box color="gray.500">0x45mfefewfe....cBa</Box>
+                        <Text color="gray.500">{id}</Text>
+                        <Text color="gray.500">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
                     </VStack>
                 </HStack>
                 <Box m={"auto"} p="6" w={{ base: "100vw", xl: "70vw" }}>
@@ -91,103 +102,117 @@ const Profilepage = () => {
                         <TabPanels>
                             <TabPanel>
                                 {/*  */}
-                                <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
-                                    <Grid
-                                        templateRows={{ base: 'auto auto', md: 'auto' }}
-                                        w="100%"
-                                        templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
-                                        p={{ base: 2, sm: 4 }}
-                                        gap={3}
-                                        alignItems="center"
-                                        _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
-                                    >
-                                        <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
-                                            <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
-                                                {"Video.title"}
-                                            </chakra.h3>
-                                            <chakra.p
-                                                fontWeight="medium"
-                                                fontSize="sm"
-                                                color={useColorModeValue('gray.600', 'gray.300')}
-                                            >
-                                                Published: {"Video.created_at"}
-                                            </chakra.p>
-                                        </Box>
-                                        <HStack
-                                            spacing={{ base: 0, sm: 3 }}
-                                            alignItems="center"
-                                            fontWeight="medium"
-                                            fontSize={{ base: 'xs', sm: 'sm' }}
-                                            color={useColorModeValue('gray.600', 'gray.300')}
-                                        >
-                                        </HStack>
-                                        <Stack
-                                            spacing={2}
-                                            direction="row"
-                                            fontSize={{ base: 'sm', sm: 'md' }}
-                                            justifySelf="flex-end"
-                                            alignItems="center"
-                                        >
-                                             <Button size="sm" leftIcon={<MdMoney />}>
-                                                Bid in Auction
-                                            </Button>
-                                            <Button size="sm" leftIcon={<FaEye/>}>
-                                                View
-                                            </Button>
-                                        </Stack>
-                                    </Grid>
-                                    <Divider m={0} />
+                                {
+                                    holdings.map((item: any) => {
+                                        return (
+                                            <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
+                                                <Grid
+                                                    templateRows={{ base: 'auto auto', md: 'auto' }}
+                                                    w="100%"
+                                                    templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
+                                                    p={{ base: 2, sm: 4 }}
+                                                    gap={3}
+                                                    alignItems="center"
+                                                    _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
+                                                >
+                                                    <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
+                                                        <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
+                                                            {item.name}
+                                                        </chakra.h3>
+                                                        <chakra.p
+                                                            fontWeight="medium"
+                                                            fontSize="sm"
+                                                            color={useColorModeValue('gray.600', 'gray.300')}
+                                                        >
+                                                            {item.description}
+                                                        </chakra.p>
+                                                    </Box>
+                                                    <HStack
+                                                        spacing={{ base: 0, sm: 3 }}
+                                                        alignItems="center"
+                                                        fontWeight="medium"
+                                                        fontSize={{ base: 'xs', sm: 'sm' }}
+                                                        color={useColorModeValue('gray.600', 'gray.300')}
+                                                    >
+                                                    </HStack>
+                                                    <Stack
+                                                        spacing={2}
+                                                        direction="row"
+                                                        fontSize={{ base: 'sm', sm: 'md' }}
+                                                        justifySelf="flex-end"
+                                                        alignItems="center"
+                                                    >
+                                                        <Button size="sm" leftIcon={<MdMoney />} onClick={
+                                                            () => offerAuction(item.tokenId)
+                                                        }>
+                                                            Bid in Auction
+                                                        </Button>
+                                                        <Button size="sm" leftIcon={<FaEye />} onClick={() => navigate(`/videos/${item.tokenId}`)}>
+                                                            View
+                                                        </Button>
+                                                    </Stack>
+                                                </Grid>
+                                                <Divider m={0} />
 
-                                </VStack>
-                                {/*  */}
+                                            </VStack>)
+                                    })
+                                }
                             </TabPanel>
                             <TabPanel>
                                 {/*  */}
-                                <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
-                                    <Grid
-                                        templateRows={{ base: 'auto auto', md: 'auto' }}
-                                        w="100%"
-                                        templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
-                                        p={{ base: 2, sm: 4 }}
-                                        gap={3}
-                                        alignItems="center"
-                                        _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
-                                    >
-                                        <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
-                                            <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
-                                                {"article.title"}
-                                            </chakra.h3>
-                                            <chakra.p
-                                                fontWeight="medium"
-                                                fontSize="sm"
-                                                color={useColorModeValue('gray.600', 'gray.300')}
-                                            >
-                                                Published: {"article.created_at"}
-                                            </chakra.p>
-                                        </Box>
-                                        <HStack
-                                            spacing={{ base: 0, sm: 3 }}
-                                            alignItems="center"
-                                            fontWeight="medium"
-                                            fontSize={{ base: 'xs', sm: 'sm' }}
-                                            color={useColorModeValue('gray.600', 'gray.300')}
-                                        >
-                                        </HStack>
-                                        <Stack
-                                            spacing={2}
-                                            direction="row"
-                                            fontSize={{ base: 'sm', sm: 'md' }}
-                                            justifySelf="flex-end"
-                                            alignItems="center"
-                                        >
-                                            <Button size="sm" leftIcon={<FaEye />} onClick={()=>navigate('/bid/45545')}>
-                                                View Auction
-                                            </Button>
-                                        </Stack>
-                                    </Grid>
-                                    <Divider m={0} />
+                                {
+                                    auctions.map((item: any) => {
+                                        return (
 
-                                </VStack>
+                                            <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
+                                                <Grid
+                                                    templateRows={{ base: 'auto auto', md: 'auto' }}
+                                                    w="100%"
+                                                    templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
+                                                    p={{ base: 2, sm: 4 }}
+                                                    gap={3}
+                                                    alignItems="center"
+                                                    _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
+                                                >
+                                                    <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
+                                                        <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
+                                                            {"article.title"}
+                                                        </chakra.h3>
+                                                        <chakra.p
+                                                            fontWeight="medium"
+                                                            fontSize="sm"
+                                                            color={useColorModeValue('gray.600', 'gray.300')}
+                                                        >
+                                                            Published: {"article.created_at"}
+                                                        </chakra.p>
+                                                    </Box>
+                                                    <HStack
+                                                        spacing={{ base: 0, sm: 3 }}
+                                                        alignItems="center"
+                                                        fontWeight="medium"
+                                                        fontSize={{ base: 'xs', sm: 'sm' }}
+                                                        color={useColorModeValue('gray.600', 'gray.300')}
+                                                    >
+                                                    </HStack>
+                                                    <Stack
+                                                        spacing={2}
+                                                        direction="row"
+                                                        fontSize={{ base: 'sm', sm: 'md' }}
+                                                        justifySelf="flex-end"
+                                                        alignItems="center"
+                                                    >
+                                                        <Button size="sm" leftIcon={<FaEye />} onClick={() => navigate('/bid/45545')}>
+                                                            View Auction
+                                                        </Button>
+                                                    </Stack>
+                                                </Grid>
+                                                <Divider m={0} />
+
+                                            </VStack>
+
+                                        )
+                                    })
+                                }
                             </TabPanel>
                         </TabPanels>
                     </Tabs>

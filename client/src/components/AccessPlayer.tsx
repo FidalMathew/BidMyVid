@@ -4,7 +4,7 @@ import authStore from '../stores/authStore';
 import { useEffect } from 'react';
 import axios from 'axios'
 
-export const AccessPlayer = () => {
+export const AccessPlayer = ({ playbackId }) => {
 
     const [accessKey, setAccessKey] = useState("")
     const [sig, setSig] = useState("")
@@ -37,8 +37,7 @@ export const AccessPlayer = () => {
         }
     }, [s])
 
-    const playbackId = "dd06al7r1jqniyhf"
-
+    // const playbackId = "dd06al7r1jqniyhf"
     // console.log("accessKey: ", accessKey)
     return (<>{
         accessKey ? <Player playbackId={playbackId} accessKey={accessKey} /> : <div>Access Key is not available</div>

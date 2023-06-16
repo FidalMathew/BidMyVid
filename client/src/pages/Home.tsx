@@ -21,25 +21,26 @@ const Homecomponent = () => {
 
         return formattedDateTime;
     };
-    const[auctionitems,setAuctionItems]=React.useState([])
+    const [auctionitems, setAuctionItems] = React.useState([])
+
     React.useEffect(() => {
         const getAllAuctions = async () => {
-            let arr:any=[];
+            let arr: any = [];
             const res = await Contract.getAllAuctions()
-            res.map((item:any)=>{
-                let values={
-                    biddable:item.biddable,
-                    bids:Number(item.bids._hex),
-                    description:item.description,
-                    endTime:convertDateAndTime(item.endTime._hex),
-                    image:item.image,
-                    live:item.live,
-                    name:item.name,
-                    owner:item.owner,
-                    price:Number(item.price),
-                    sold:item.sold,
-                    tokenId:Number(item.tokenId),
-                    winner:item.winner,
+            res.map((item: any) => {
+                let values = {
+                    biddable: item.biddable,
+                    bids: Number(item.bids._hex),
+                    description: item.description,
+                    endTime: convertDateAndTime(item.endTime._hex),
+                    image: item.image,
+                    live: item.live,
+                    name: item.name,
+                    owner: item.owner,
+                    price: Number(item.price),
+                    sold: item.sold,
+                    tokenId: Number(item.tokenId),
+                    winner: item.winner,
                 }
                 arr.push(values);
             })
@@ -54,8 +55,8 @@ const Homecomponent = () => {
             <Box>
                 <Text fontSize="4xl" textAlign="center" fontWeight="bold" mt="10"></Text>
                 <VStack>
-                    {auctionitems.map((item:any,index:any)=>{
-                        return  <Cards auctionItem={item} key={index}/>
+                    {auctionitems.map((item: any, index: any) => {
+                        return <Cards auctionItem={item} key={index} />
                     })}
                 </VStack>
             </Box>

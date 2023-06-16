@@ -14,7 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { AccessPlayer } from './AccessPlayer';
 import Navbar from './Navbar';
 
-const Cards = ({auctionItem}) => {
+// eslint-disable-next-line react/prop-types
+const Cards = ({ auctionItem }) => {
     const navigate = useNavigate()
     return (
         <>
@@ -33,7 +34,7 @@ const Cards = ({auctionItem}) => {
                         objectFit="cover"
                         w="100%"
                     /> */}
-                        <AccessPlayer />
+                        <AccessPlayer playbackId={auctionItem.image} />
                         <Button
                             position="absolute"
                             colorScheme='gray'
@@ -71,7 +72,7 @@ const Cards = ({auctionItem}) => {
                             spacing={{ base: 2, sm: 0 }}
                         >
                             {/* <CustomButton variant="outline">Not a member?</CustomButton> */}
-                            <Button textTransform="uppercase" lineHeight="inherit" rounded="md" colorScheme="gray" variant="solid" onClick={() => navigate('/videos/23234')}>
+                            <Button textTransform="uppercase" lineHeight="inherit" rounded="md" colorScheme="gray" variant="solid" onClick={() => navigate(`/bid/${auctionItem.tokenId}`)}>
                                 Access Now
                             </Button>
                         </Stack>

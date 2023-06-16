@@ -19,6 +19,7 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
     const [nftName, setNftName] = useState<string | undefined>();
     const [nftDescription, setNftDescription] = useState<string | undefined>();
     const [videoUrl, setVideoUrl] = useState("");
+    const [tokenURI, setTokenURI] = useState("");
     const toast = useToast()
     const navigate = useNavigate()
 
@@ -88,13 +89,11 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
         [progress],
     );
 
-
-
     const mintNFT = async (tokenURI: string) => {
+        console.log(asset)
         if (!asset || !asset[0] || !asset[0].playbackUrl) return;
 
-        const image = asset[0].playbackUrl
-        // const price = ethers.utils.parseEther("0.002")
+        const image = asset[0].playbackId
         let price: number = 0.002;
         const listingPrice = await Contract.getListingPrice()
         console.log(listingPrice.toString())
@@ -151,7 +150,8 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                         isClosable: true,
                     })
                     // mintNFT(tokenURI, s.address)   
-                    mintNFT(tokenURI);
+                    // mintNFT(tokenURI);
+                    setTokenURI(tokenURI)
 
                 } catch (error) {
                     console.log("JSON to IPFS: ")
@@ -168,6 +168,7 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
             sendJSONtoIPFS()
         }
     }, [asset])
+
 
     useEffect(() => {
         console.log(createError, 'error')
@@ -282,10 +283,21 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                                         </Box>
                                     </Center>
                                 )}
-                                <Button
-                                    isLoading={createStatus === 'loading'}
-                                    loadingText="Uploading..."
-                                    type="submit" w="100%">Submit</Button>
+
+                                {
+                                    tokenURI ?
+                                        <Button onClick={() => mintNFT(tokenURI)}>
+                                            Mint NFT
+                                        </Button> :
+                                        <Button
+                                            isLoading={createStatus === 'loading'}
+                                            loadingText="Uploading..."
+                                            type="submit" w="100%">
+                                            Submit
+                                        </Button>
+
+
+                                }
                             </VStack>
                         </form>
                     )}
