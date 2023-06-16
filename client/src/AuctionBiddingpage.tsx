@@ -14,7 +14,7 @@ const AuctionBiddingpage = () => {
     const [bidders, setBidders] = useState([])
     const [auctionItem, setAuctionItem] = useState({} as any)
 
-    const convertDateAndTime = (timestamp) => {
+    const convertDateAndTime = (timestamp: any) => {
         const decimalTimestamp = parseInt(timestamp.substring(2), 16);
         const date = new Date(decimalTimestamp * 1000);
         const year = date.getFullYear();
@@ -87,6 +87,7 @@ const AuctionBiddingpage = () => {
         func()
     }, [id])
 
+    if (!auctionItem.price) return (<div>Loading...</div>)
 
     return (
         <Box minH="100%">
@@ -96,6 +97,7 @@ const AuctionBiddingpage = () => {
                 }} cursor={"pointer"} />
                 <Text fontSize="sm">Go Back</Text>
             </HStack>
+
             <VStack p="10" pl="0" pr="0">
                 <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-around" w="50%" h="auto" alignItems="flex-start" spacing={"10"}>
                     <Box w={{ base: "100%", lg: "50%" }} h="auto">
