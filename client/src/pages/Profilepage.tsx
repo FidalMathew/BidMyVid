@@ -1,9 +1,12 @@
-import { Avatar, Box, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from "@chakra-ui/react"
+import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
 import { Contract } from "../initializers/ethers"
 import * as React from "react"
 import authStore from "../stores/authStore"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { IconType } from "react-icons"
+import { FaRegComment, FaRegHeart, FaRegEye, FaEye } from 'react-icons/fa';
+import { MdMoney } from "react-icons/md"
 
 const Profilepage = () => {
     const { id } = useParams();
@@ -60,6 +63,8 @@ const Profilepage = () => {
         console.log(res)
     }
 
+    const navigate = useNavigate()
+
     return (
         <VStack>
             <Navbar />
@@ -85,14 +90,104 @@ const Profilepage = () => {
                         />
                         <TabPanels>
                             <TabPanel>
-                                <Text fontSize="xl" fontWeight="bold" color="gray.500" textAlign="center" mt="10">
-                                    No Holdings yet
-                                </Text>
+                                {/*  */}
+                                <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
+                                    <Grid
+                                        templateRows={{ base: 'auto auto', md: 'auto' }}
+                                        w="100%"
+                                        templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
+                                        p={{ base: 2, sm: 4 }}
+                                        gap={3}
+                                        alignItems="center"
+                                        _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
+                                    >
+                                        <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
+                                            <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
+                                                {"Video.title"}
+                                            </chakra.h3>
+                                            <chakra.p
+                                                fontWeight="medium"
+                                                fontSize="sm"
+                                                color={useColorModeValue('gray.600', 'gray.300')}
+                                            >
+                                                Published: {"Video.created_at"}
+                                            </chakra.p>
+                                        </Box>
+                                        <HStack
+                                            spacing={{ base: 0, sm: 3 }}
+                                            alignItems="center"
+                                            fontWeight="medium"
+                                            fontSize={{ base: 'xs', sm: 'sm' }}
+                                            color={useColorModeValue('gray.600', 'gray.300')}
+                                        >
+                                        </HStack>
+                                        <Stack
+                                            spacing={2}
+                                            direction="row"
+                                            fontSize={{ base: 'sm', sm: 'md' }}
+                                            justifySelf="flex-end"
+                                            alignItems="center"
+                                        >
+                                             <Button size="sm" leftIcon={<MdMoney />}>
+                                                Bid in Auction
+                                            </Button>
+                                            <Button size="sm" leftIcon={<FaEye/>}>
+                                                View
+                                            </Button>
+                                        </Stack>
+                                    </Grid>
+                                    <Divider m={0} />
+
+                                </VStack>
+                                {/*  */}
                             </TabPanel>
                             <TabPanel>
-                                <Text fontSize="xl" fontWeight="bold" color="gray.500" textAlign="center" mt="10">
-                                    No NFTs in Auction now
-                                </Text>
+                                {/*  */}
+                                <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
+                                    <Grid
+                                        templateRows={{ base: 'auto auto', md: 'auto' }}
+                                        w="100%"
+                                        templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
+                                        p={{ base: 2, sm: 4 }}
+                                        gap={3}
+                                        alignItems="center"
+                                        _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
+                                    >
+                                        <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
+                                            <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
+                                                {"article.title"}
+                                            </chakra.h3>
+                                            <chakra.p
+                                                fontWeight="medium"
+                                                fontSize="sm"
+                                                color={useColorModeValue('gray.600', 'gray.300')}
+                                            >
+                                                Published: {"article.created_at"}
+                                            </chakra.p>
+                                        </Box>
+                                        <HStack
+                                            spacing={{ base: 0, sm: 3 }}
+                                            alignItems="center"
+                                            fontWeight="medium"
+                                            fontSize={{ base: 'xs', sm: 'sm' }}
+                                            color={useColorModeValue('gray.600', 'gray.300')}
+                                        >
+                                        </HStack>
+                                        <Stack
+                                            spacing={2}
+                                            direction="row"
+                                            fontSize={{ base: 'sm', sm: 'md' }}
+                                            justifySelf="flex-end"
+                                            alignItems="center"
+                                        >
+                                            <Button size="sm" leftIcon={<FaEye />} onClick={()=>navigate('/bid/45545')}>
+                                                View Auction
+                                            </Button>
+                                        </Stack>
+                                    </Grid>
+                                    <Divider m={0} />
+
+                                </VStack>
                             </TabPanel>
                         </TabPanels>
                     </Tabs>
@@ -101,5 +196,29 @@ const Profilepage = () => {
         </VStack>
     )
 }
+
+const ArticleStat = ({ icon, value }: { icon: IconType; value: number }) => {
+    return (
+        <Flex p={1} alignItems="center">
+            <Icon as={icon} w={5} h={5} mr={2} />
+            <chakra.span> {value} </chakra.span>
+        </Flex>
+    );
+};
+
+const ArticleSettingLink = ({ label }: { label: string }) => {
+    return (
+        <chakra.p
+            as={ChakraLink}
+            _hover={{ bg: useColorModeValue('gray.400', 'gray.600') }}
+            p={1}
+            rounded="md"
+        >
+            {label}
+        </chakra.p>
+    );
+};
+
+
 
 export default Profilepage

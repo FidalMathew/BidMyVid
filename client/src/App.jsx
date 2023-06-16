@@ -20,6 +20,7 @@ import { useEffect } from 'react';
 import Videopage from './components/Videopage';
 import Profilepage from './pages/Profilepage';
 import Earning from './pages/Earning';
+import AuctionBiddingpage from './AuctionBiddingpage';
 
 const VITE_LIVEPEER_STUDIO_API_KEY = import.meta.env.VITE_LIVEPEER_STUDIO_API_KEY;
 console.log(VITE_LIVEPEER_STUDIO_API_KEY, 'api key')
@@ -64,6 +65,7 @@ function App() {
           <Route path="/videos/:id" element={<Videopage />} />
           <Route path="/profile/:id" element={<Profilepage />} />
           <Route path="/earning" element={<Earning />} />
+          <Route path="/bid/:nftId" element={<AuctionBiddingpage />} />
         </Routes>
       </BrowserRouter>
     </LivepeerConfig>

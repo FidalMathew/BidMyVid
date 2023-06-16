@@ -114,7 +114,6 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
         console.log(tx)
     }
 
-
     useEffect(() => {
         console.log(asset)
         if (asset && asset[0] && asset[0].playbackId && nftName && nftDescription && apiKey && secretKey) {
@@ -193,19 +192,6 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                     }} cursor={"pointer"} />
                     <Text fontSize="sm">Go Back</Text>
                 </HStack>
-                {progressFormatted && progress !== undefined && (
-                    <Center>
-                        <Box w="50%">
-                            <Progress
-                                value={progress?.[0]?.progress * 100}
-                                size="sm"
-                                colorScheme="purple"
-                                mb="4"
-                            />
-                            <Text textAlign="center">{progressFormatted}</Text>
-                        </Box>
-                    </Center>
-                )}
                 <Heading as="h1" size="xl" mb="4">
                     Create an NFT
                 </Heading>
