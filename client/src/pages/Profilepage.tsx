@@ -6,7 +6,7 @@ import authStore from "../stores/authStore"
 import { useParams } from "react-router-dom"
 
 const Profilepage = () => {
-    const {id}=useParams();
+    const { id } = useParams();
     const convertDateAndTime = (timestamp) => {
         const decimalTimestamp = parseInt(timestamp.substring(2), 16);
         const date = new Date(decimalTimestamp * 1000);
@@ -22,38 +22,38 @@ const Profilepage = () => {
         return formattedDateTime;
     };
     console.log(id)
-    const[auctionitems,setAuctionItems]=React.useState([])
+    const [auctionitems, setAuctionItems] = React.useState([])
     React.useEffect(() => {
         const getAllAuctions = async () => {
-            let arr:any=[];
+            let arr: any = [];
             const res = await Contract.getAllAuctions()
-            res.map((item:any)=>{
-                console.log(item.owner.toLowerCase(),"debugging  ")
-                if(item.owner.toLowerCase()===id)
-                {
-                    let values={
-                        biddable:item.biddable,
-                        bids:Number(item.bids._hex),
-                        description:item.description,
-                        endTime:convertDateAndTime(item.endTime._hex),
-                        image:item.image,
-                        live:item.live,
-                        name:item.name,
-                        owner:item.owner,
-                        price:Number(item.price),
-                        sold:item.sold,
-                        tokenId:Number(item.tokenId),
-                        winner:item.winner,
+            res.map((item: any) => {
+                console.log(item.owner.toLowerCase(), "debugging  ")
+                if (item.owner.toLowerCase() === id) {
+                    let values = {
+                        biddable: item.biddable,
+                        bids: Number(item.bids._hex),
+                        description: item.description,
+                        endTime: convertDateAndTime(item.endTime._hex),
+                        image: item.image,
+                        live: item.live,
+                        name: item.name,
+                        owner: item.owner,
+                        price: Number(item.price),
+                        sold: item.sold,
+                        tokenId: Number(item.tokenId),
+                        winner: item.winner,
                     }
                     arr.push(values);
                 }
-                
+
             })
             console.log(arr)
             setAuctionItems(arr)
         }
         getAllAuctions()
-    }, [Contract,id])
+    }, [Contract, id])
+
     const offerAuction = async (tokenId) => {
         const res = await Contract.offerAuction(tokenId, true);
         await res.wait()
