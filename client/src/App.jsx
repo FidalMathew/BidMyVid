@@ -22,7 +22,7 @@ import Profilepage from './pages/Profilepage';
 import Earning from './pages/Earning';
 
 const VITE_LIVEPEER_STUDIO_API_KEY = import.meta.env.VITE_LIVEPEER_STUDIO_API_KEY;
-
+console.log(VITE_LIVEPEER_STUDIO_API_KEY, 'api key')
 const VITE_PINATA_API_KEY = import.meta.env.VITE_PINATA_API_KEY || '';
 const VITE_PINATA_SECRET_API_KEY = import.meta.env.VITE_PINATA_SECRET_API_KEY || '';
 // console.log('VITE_LIVEPEER_STUDIO_API_KEY', VITE_LIVEPEER_STUDIO_API_KEY);

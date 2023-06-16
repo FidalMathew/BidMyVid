@@ -144,6 +144,14 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
 
                     const tokenURI = `ipfs://${resJSON.data.IpfsHash}`;
                     console.log("Token URI", tokenURI);
+                    toast({
+                        title: "Success",
+                        description: "NFT created successfully",
+                        status: "success",
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                    // mintNFT(tokenURI, s.address)   
                     mintNFT(tokenURI);
 
                 } catch (error) {
@@ -275,6 +283,19 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                                             </Text>
                                         </VStack>}
                                 </Box>
+                                {progressFormatted && progress !== undefined && (
+                                    <Center w="full">
+                                        <Box w="50%">
+                                            <Progress
+                                                value={progress?.[0]?.progress * 100}
+                                                size="sm"
+                                                colorScheme="teal"
+                                                mb="4"
+                                            />
+                                            <Text textAlign="center">{progressFormatted}</Text>
+                                        </Box>
+                                    </Center>
+                                )}
                                 <Button
                                     isLoading={createStatus === 'loading'}
                                     loadingText="Uploading..."

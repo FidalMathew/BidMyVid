@@ -75,7 +75,7 @@ const Profilepage = () => {
                     <Tabs position="relative" variant="unstyled" isFitted>
                         <TabList>
                             <Tab>Holdings</Tab>
-                            <Tab>Created</Tab>
+                            <Tab>In Auction</Tab>
                         </TabList>
                         <TabIndicator
                             mt="-1.5px"
@@ -91,7 +91,7 @@ const Profilepage = () => {
                             </TabPanel>
                             <TabPanel>
                                 <Text fontSize="xl" fontWeight="bold" color="gray.500" textAlign="center" mt="10">
-                                    No Videos yet
+                                    No NFTs in Auction now
                                 </Text>
                             </TabPanel>
                         </TabPanels>
