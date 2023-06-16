@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button } from "@chakra-ui/react"
+import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
 import { Contract } from "../initializers/ethers"
 import * as React from "react"
@@ -29,6 +29,7 @@ const Profilepage = () => {
     const [auctions, setAuctions] = React.useState([])
 
     const [update, setUpdate] = React.useState(true)
+    const toast = useToast()
 
     React.useEffect(() => {
         const getAllAuctions = async () => {
@@ -66,15 +67,39 @@ const Profilepage = () => {
         getAllAuctions()
     }, [Contract, id, update])
 
+    const [auctionLoading, setAuctionLoading] = React.useState(false)
+
     const offerAuction = async (tokenId: number) => {
-        const res = await Contract.offerAuction(tokenId, true);
-        await res.wait()
-        setUpdate(!update)
-        console.log(res)
+        setAuctionLoading(true)
+        try{
+
+            const res = await Contract.offerAuction(tokenId, true);
+            await res.wait()
+            setUpdate(!update)
+            console.log(res)
+            toast({
+                title: "Success",
+                description: "Auction offered successfully",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            })
+        }catch(err){
+            console.log(err)
+            toast({
+                title: "Error",
+                description: "Error in offering auction",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            })
+        }finally{
+            setAuctionLoading(false)
+        }
     }
 
     const navigate = useNavigate()
-
+    console.log(holdings, auctions)
     return (
         <VStack>
             <Navbar />
@@ -103,9 +128,9 @@ const Profilepage = () => {
                             <TabPanel>
                                 {/*  */}
                                 {
-                                    holdings.map((item: any) => {
+                                    holdings.map((item: any, index: number) => {
                                         return (
-                                            <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
+                                            <VStack key={index} border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0} mb="7">
                                                 <Grid
                                                     templateRows={{ base: 'auto auto', md: 'auto' }}
                                                     w="100%"
@@ -147,7 +172,7 @@ const Profilepage = () => {
                                                         }>
                                                             Bid in Auction
                                                         </Button>
-                                                        <Button size="sm" leftIcon={<FaEye />} onClick={() => navigate(`/videos/${item.tokenId}`)}>
+                                                        <Button size="sm" leftIcon={<FaEye />} onClick={() => navigate(`/videos/${item.tokenId}`, { state: item })}>
                                                             View
                                                         </Button>
                                                     </Stack>
@@ -161,10 +186,10 @@ const Profilepage = () => {
                             <TabPanel>
                                 {/*  */}
                                 {
-                                    auctions.map((item: any) => {
+                                    auctions.map((item: any, index: number) => {
                                         return (
 
-                                            <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
+                                            <VStack key={index} border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
                                                 <Grid
                                                     templateRows={{ base: 'auto auto', md: 'auto' }}
                                                     w="100%"
@@ -176,7 +201,7 @@ const Profilepage = () => {
                                                 >
                                                     <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
                                                         <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
-                                                            {"article.title"}
+                                                            {item.name}
                                                         </chakra.h3>
                                                         <chakra.p
                                                             fontWeight="medium"
@@ -201,7 +226,7 @@ const Profilepage = () => {
                                                         justifySelf="flex-end"
                                                         alignItems="center"
                                                     >
-                                                        <Button size="sm" leftIcon={<FaEye />} onClick={() => navigate('/bid/45545')}>
+                                                        <Button size="sm" leftIcon={<FaEye />} onClick={() => navigate(`/bid/${item.tokenId}`)}>
                                                             View Auction
                                                         </Button>
                                                     </Stack>

@@ -1,0 +1,14 @@
+.bid-table::-webkit-scrollbar {
+    width: 0.4em;
+}
+
+.bid-table::-webkit-scrollbar-track {
+    outline: none;
+    border: none;
+}
+
+.bid-table::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid rgb(175, 187, 200);
+    border-radius: 10px;
+}

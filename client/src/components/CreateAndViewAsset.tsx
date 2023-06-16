@@ -89,28 +89,48 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
         [progress],
     );
 
+    const [mintLoading, setMintLoading] = useState(false)
     const mintNFT = async (tokenURI: string) => {
-        console.log(asset)
-        if (!asset || !asset[0] || !asset[0].playbackUrl) return;
+        try {
 
-        const image = asset[0].playbackId
-        let price: number = 0.002;
-        const listingPrice = await Contract.getListingPrice()
-        console.log(listingPrice.toString())
-        console.log(nftName, nftDescription, image, tokenURI, toWei(price))
+            console.log(asset)
+            if (!asset || !asset[0] || !asset[0].playbackUrl) return;
 
-        const tx = await Contract.createAuction(
-            nftName, nftDescription,
-            image,
-            tokenURI,
-            toWei(price),
-            {
-                from: s.address,
-                value: toWei(0.02),
-            },
-        )
-        await tx.wait()
-        console.log(tx)
+            const image = asset[0].playbackId
+            let price: number = 0.002;
+            const listingPrice = await Contract.getListingPrice()
+            console.log(listingPrice.toString())
+            console.log(nftName, nftDescription, image, tokenURI, toWei(price))
+
+            const tx = await Contract.createAuction(
+                nftName, nftDescription,
+                image,
+                tokenURI,
+                toWei(price),
+                {
+                    from: s.address,
+                    value: toWei(0.02),
+                },
+            )
+            await tx.wait()
+            console.log(tx)
+            toast({
+                title: "Success",
+                description: "NFT created successfully",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            })
+        } catch (err) {
+            console.log(err)
+            toast({
+                title: "Error",
+                description: "Error minting NFT",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            })
+        }
     }
 
     useEffect(() => {
@@ -144,13 +164,13 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                     console.log("Token URI", tokenURI);
                     toast({
                         title: "Success",
-                        description: "NFT created successfully",
+                        description: `Uploaded to IPFS: ${tokenURI}`,
                         status: "success",
                         duration: 9000,
                         isClosable: true,
                     })
                     // mintNFT(tokenURI, s.address)   
-                    // mintNFT(tokenURI);
+                    mintNFT(tokenURI);
                     setTokenURI(tokenURI)
 
                 } catch (error) {

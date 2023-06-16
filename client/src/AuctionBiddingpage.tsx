@@ -1,10 +1,12 @@
-import { Box, Button, HStack, Icon, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr, VStack, useColorModeValue } from "@chakra-ui/react"
+import { Box, Button, FormControl, FormErrorMessage, HStack, Icon, Input, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr, VStack, useColorModeValue } from "@chakra-ui/react"
 import * as React from 'react'
 import { AccessPlayer } from "./components/AccessPlayer"
 import { useNavigate, useParams } from "react-router-dom"
 import { FiArrowLeft } from "react-icons/fi"
 import { Contract, fromWei } from "../src/initializers/ethers"
 import { useState } from "react"
+import { Field, Formik } from "formik"
+import * as Yup from 'yup'
 
 const AuctionBiddingpage = () => {
     const navigate = useNavigate()
@@ -98,9 +100,9 @@ const AuctionBiddingpage = () => {
                 <Text fontSize="sm">Go Back</Text>
             </HStack>
 
-            <VStack p="10" pl="0" pr="0">
+            <VStack p="10" pl="10" pr="10">
                 <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-around" w="50%" h="auto" alignItems="flex-start" spacing={"10"}>
-                    <Box w={{ base: "100%", lg: "50%" }} h="auto">
+                    <Box w={{ base: "100%", lg: "50%" }} h="full" className="player">
                         <AccessPlayer playbackId={auctionItem.image} />
                     </Box>
                     <VStack align="left" w={{ base: "100%", lg: "50%" }} spacing={10}>
@@ -114,8 +116,35 @@ const AuctionBiddingpage = () => {
                         </VStack>
                     </VStack>
                 </Stack>
-                <TableContainer mt="7" w={{ base: "100%", md: "50%" }}>
-                    <Table variant='unstyled' border="1px solid" borderColor={useColorModeValue('gray.100', 'gray.500')} size={"lg"} >
+                <Box mt="10" w={{base: "100%", lg: "50%"}}>
+                    <Formik
+                        initialValues={{ amount: "" }}
+                        validationSchema={
+                            Yup.object({
+                                amount: Yup.number().required("Required")
+                            })
+                        }
+                        onSubmit={(values, actions) => {
+                            console.log(values)
+                        }}
+                    >
+                        {(formik) => (
+                            <form onSubmit={formik.handleSubmit}>
+                                <FormControl id="amount"
+                                    isInvalid={Boolean(formik.errors.amount && formik.touched.amount)}
+                                >
+                                    <HStack>
+                                        <Field as={Input} name="amount" type="number" placeholder="Enter Amount" />
+                                        <Button type="submit" colorScheme="blue" size="md" w="50%" >Place a Bid</Button>
+                                    </HStack>
+                                    <FormErrorMessage color="red">{formik.errors.amount}</FormErrorMessage>
+                                </FormControl>
+                            </form>
+                        )}
+                    </Formik>
+                </Box>
+                <TableContainer mt="7" w={{ base: "100%", lg: "50%" }} maxH={"40vh"} overflowY={"scroll"} border="1px solid" borderColor={useColorModeValue('gray.100', 'gray.500')} className="bid-table">
+                    <Table variant='unstyled' size={"lg"} overflow={"scroll"} h="300px" overflowY={"hidden"}>
                         <Thead>
                             <Tr>
                                 <Th>Bidders</Th>
@@ -145,9 +174,22 @@ const AuctionBiddingpage = () => {
                                 <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
                                 <Td isNumeric textAlign={"right"}>0.91444</Td>
                             </Tr>
+                            <Tr>
+                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
+                                <Td isNumeric textAlign={"right"}>0.91444</Td>
+                            </Tr>
+                            <Tr>
+                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
+                                <Td isNumeric textAlign={"right"}>0.91444</Td>
+                            </Tr>
+                            <Tr>
+                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
+                                <Td isNumeric textAlign={"right"}>0.91444</Td>
+                            </Tr>
                         </Tbody>
                     </Table>
                 </TableContainer>
+                {/* <Button colorScheme="blue" size="lg" w="50%" mt="10">Place a Bid</Button> */}
             </VStack>
 
         </Box>

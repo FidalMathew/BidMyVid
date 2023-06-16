@@ -1,7 +1,7 @@
-import { Avatar, Box, Button, Flex, HStack, Icon, Image, Text, VStack, chakra } from "@chakra-ui/react"
+import { Avatar, Box, Button, Flex, HStack, Heading, Icon, Image, Text, VStack, chakra } from "@chakra-ui/react"
 import { AiFillCreditCard, AiFillEye } from "react-icons/ai"
 import { FiArrowLeft } from "react-icons/fi"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { AccessPlayer } from "./AccessPlayer"
 
 import { Contract, toWei } from '../initializers/ethers'
@@ -24,10 +24,12 @@ const Videopage = () => {
     }
 
     const navigate = useNavigate()
+    const { state } = useLocation()
+    console.log(state, 'uselocation')
 
     return (
         <Flex align={"center"} justify={"center"} w="100vw" h="100%" p="7" direction={"column"}>
-            <VStack spacing={"6"} align={"left"}>
+            <VStack spacing={"6"} align={"left"} w="50%">
                 <HStack>
                     <Icon as={FiArrowLeft} onClick={() => {
                         navigate(-1)
@@ -35,7 +37,8 @@ const Videopage = () => {
                     <Text fontSize="sm">Go Back</Text>
                 </HStack>
                 <Box position="relative" h="full" w="auto" rounded="2xl">
-                    <AccessPlayer />
+                    <Heading mb="6" size="md" textAlign={"center"}>{state?.name}</Heading>
+                    <AccessPlayer playbackId={state?.image} />
                     <Button
                         position="absolute"
                         colorScheme='gray'
@@ -48,15 +51,12 @@ const Videopage = () => {
                         Stake to reveal
                     </Button>
                 </Box>
-                <Button colorScheme="teal" variant={"outline"} leftIcon={<AiFillCreditCard />} w="full" border="2px solid">
-                    Steal for 0.001 ETH
-                </Button>
                 {/* created by and avatar in sm size */}
                 <HStack>
-                    <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-                    <Text fontSize="sm">Created by: <chakra.span as="u">0x.3434938y</chakra.span> </Text>
+                    <Avatar size="sm" />
+                    <Text fontSize="sm">Owner:{" "} <chakra.span as="u">{state?.owner?.slice(0, 7) + '...' + state?.owner?.slice(-4)}</chakra.span> </Text>
                 </HStack>
-                <Text fontSize="md" textAlign={"center"}>Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.</Text>
+                <Text fontSize="md" textAlign={"center"}>{state?.description}</Text>
             </VStack>
 
         </Flex>

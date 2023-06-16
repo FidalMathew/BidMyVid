@@ -12,7 +12,6 @@ import {
 import { AiFillEye } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { AccessPlayer } from './AccessPlayer';
-import Navbar from './Navbar';
 
 // eslint-disable-next-line react/prop-types
 const Cards = ({ auctionItem }) => {
@@ -35,7 +34,7 @@ const Cards = ({ auctionItem }) => {
                         w="100%"
                     /> */}
                         <AccessPlayer playbackId={auctionItem.image} />
-                        <Button
+                        {/* <Button
                             position="absolute"
                             colorScheme='gray'
                             variant={"outline"}
@@ -45,7 +44,7 @@ const Cards = ({ auctionItem }) => {
                             leftIcon={<AiFillEye />}
                         >
                             Stake to reveal
-                        </Button>
+                        </Button> */}
                     </Box>
                     <Box p={{ base: 3, sm: 5 }}>
                         <VStack align={"start"} mb={6}>
@@ -58,12 +57,12 @@ const Cards = ({ auctionItem }) => {
                             >
                                 {auctionItem.name}
                             </chakra.h3>
-                            <Text fontSize={{ base: 'md', sm: 'lg' }} noOfLines={2}>
+                            <Text fontSize={{ base: 'md', sm: 'sm' }} noOfLines={2}>
                                 {auctionItem.description}
                             </Text>
-                            <Text fontSize={{ base: 'sm', sm: 'md' }} noOfLines={2}>
-                                by <chakra.span fontWeight="bold">{auctionItem.owner}</chakra.span> |{' '}
-                                <chakra.span fontWeight="bold">{auctionItem.endTime}</chakra.span>
+                            <Text fontSize={{ base: 'sm', sm: 'xs' }} noOfLines={2}>
+                                by <chakra.span fontWeight="semibold">{auctionItem.owner}</chakra.span> |{' '}
+                                <chakra.span fontWeight="semibold">{auctionItem.endTime}</chakra.span>
                             </Text>
                         </VStack>
                         <Stack
@@ -71,9 +70,8 @@ const Cards = ({ auctionItem }) => {
                             direction={{ base: 'column', sm: 'row' }}
                             spacing={{ base: 2, sm: 0 }}
                         >
-                            {/* <CustomButton variant="outline">Not a member?</CustomButton> */}
-                            <Button textTransform="uppercase" lineHeight="inherit" rounded="md" colorScheme="gray" variant="solid" onClick={() => navigate(`/bid/${auctionItem.tokenId}`)}>
-                                Access Now
+                            <Button textTransform="uppercase" lineHeight="inherit" rounded="md" colorScheme="gray" variant="solid" onClick={() => navigate(`/bid/${auctionItem.tokenId}`)} size={"sm"}>
+                                Place a Bid
                             </Button>
                         </Stack>
                     </Box>
