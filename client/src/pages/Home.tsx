@@ -24,12 +24,6 @@ const Homecomponent = () => {
                 <Text fontSize="4xl" textAlign="center" fontWeight="bold" mt="10"></Text>
                 <VStack>
                     <Cards />
-                    <Cards />
-                    <Cards />
-                    <Cards />
-                    <Cards />
-                    <Cards />
-                    <Cards />
                 </VStack>
             </Box>
         </>
