@@ -1,10 +1,18 @@
 import { Avatar, Box, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
 import { Contract } from "../initializers/ethers"
+import { useEffect } from "react"
 
 const Profilepage = () => {
 
-    console.log(Contract)
+    useEffect(() => {
+        const getAllAuctions = async () => {
+            const res = await Contract.getAllAuctions()
+            console.log(res)
+        }
+        getAllAuctions()
+    }, [Contract])
+
     return (
         <VStack>
             <Navbar />
