@@ -4,15 +4,34 @@ import { FiArrowLeft } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
 import { AccessPlayer } from "./AccessPlayer"
 
+import { Contract, toWei } from '../initializers/ethers'
+import { useEffect, useState } from "react"
+import authStore from "../stores/authStore"
+
 const Videopage = () => {
+
+    const s = authStore();
+    const [bid, setBid] = useState(0)
+
+    const placeBid = async (tokenId) => {
+        const price = bid.toString() // in ether
+        const res = await Contract.placeBid(tokenId, {
+            from: s.address,
+            value: toWei(price),
+        })
+        await res.wait()
+        console.log(res)
+    }
+
     const navigate = useNavigate()
+
     return (
         <Flex align={"center"} justify={"center"} w="100vw" h="100%" p="7" direction={"column"}>
             <VStack spacing={"6"} align={"left"}>
                 <HStack>
-                   <Icon as={FiArrowLeft} onClick={()=> {
+                    <Icon as={FiArrowLeft} onClick={() => {
                         navigate(-1)
-                   }} cursor={"pointer"} />
+                    }} cursor={"pointer"} />
                     <Text fontSize="sm">Go Back</Text>
                 </HStack>
                 <Box position="relative" h="full" w="auto" rounded="2xl">

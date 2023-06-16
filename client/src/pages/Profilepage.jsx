@@ -13,6 +13,13 @@ const Profilepage = () => {
         getAllAuctions()
     }, [Contract])
 
+
+    const offerAuction = async (tokenId) => {
+        const res = await Contract.offerAuction(tokenId, true);
+        await res.wait()
+        console.log(res)
+    }
+
     return (
         <VStack>
             <Navbar />
