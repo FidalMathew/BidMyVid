@@ -82,8 +82,8 @@ const Profilepage = () => {
                 <HStack spacing={4}>
                     <Avatar size="2xl" src={'https://avatars2.githubusercontent.com/u/37842853?v=4'} />
                     <VStack align={"left"} spacing="0">
-                        <Box fontWeight="bold">Fidal Mathew</Box>
-                        <Text color="gray.500">{id}</Text>
+                        {/* <Box fontWeight="bold">Fidal Mathew</Box> */}
+                        <Text color="white">{id}</Text>
                         <Text color="gray.500">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
                     </VStack>
                 </HStack>

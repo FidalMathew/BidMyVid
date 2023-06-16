@@ -65,7 +65,7 @@ function App() {
           <Route path="/videos/:id" element={<Videopage />} />
           <Route path="/profile/:id" element={<Profilepage />} />
           <Route path="/earning" element={<Earning />} />
-          <Route path="/bid/:nftId" element={<AuctionBiddingpage />} />
+          <Route path="/bid/:id" element={<AuctionBiddingpage />} />
         </Routes>
       </BrowserRouter>
     </LivepeerConfig>
