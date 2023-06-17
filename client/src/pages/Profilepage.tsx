@@ -1,6 +1,6 @@
 import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
-import { Contract } from "../initializers/ethers"
+import { Contract, followers, following } from "../initializers/ethers"
 import * as React from "react"
 import authStore from "../stores/authStore"
 import { useNavigate, useParams } from "react-router-dom"
@@ -67,11 +67,35 @@ const Profilepage = () => {
         getAllAuctions()
     }, [Contract, id, update])
 
+    const [userfollowers, setUserFollowers] = React.useState([])
+    const [userfollowing, setUserFollowing] = React.useState([])
+
+    React.useEffect(() => {
+        const getFollowers = async () => {
+            try {
+                const res = await followers(id)
+                setUserFollowers(res.subscribers)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        const getFollowing = async () => {
+            try {
+                const res = await following(id)
+                setUserFollowing(res.subscriptions)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getFollowers()
+        getFollowing()
+    }, [id])
+
     const [auctionLoading, setAuctionLoading] = React.useState(false)
 
     const offerAuction = async (tokenId: number) => {
         setAuctionLoading(true)
-        try{
+        try {
 
             const res = await Contract.offerAuction(tokenId, true);
             await res.wait()
@@ -84,7 +108,7 @@ const Profilepage = () => {
                 duration: 9000,
                 isClosable: true,
             })
-        }catch(err){
+        } catch (err) {
             console.log(err)
             toast({
                 title: "Error",
@@ -93,7 +117,7 @@ const Profilepage = () => {
                 duration: 9000,
                 isClosable: true,
             })
-        }finally{
+        } finally {
             setAuctionLoading(false)
         }
     }

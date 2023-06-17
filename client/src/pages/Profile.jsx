@@ -11,20 +11,6 @@ function Profile() {
 
     const BACKEND_ADDR = "http://localhost:5000";
 
-    // async function createSiweMessage(address, statement) {
-    //     const res = await fetch(`${BACKEND_ADDR}/nonce`);
-    //     const message = new SiweMessage({
-    //         domain,
-    //         address,
-    //         statement,
-    //         uri: origin,
-    //         version: '1',
-    //         chainId: '1',
-    //         nonce: await res.text()
-    //     });
-    //     return message.prepareMessage();
-    // }
-
     const [account, setAccount] = useState(null);
 
     async function connectWallet() {

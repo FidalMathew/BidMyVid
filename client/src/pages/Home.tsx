@@ -53,6 +53,8 @@ const Homecomponent = () => {
         }
         getAllAuctions()
     }, [Contract])
+
+
     return (
         <>
             <Navbar />
