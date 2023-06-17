@@ -18,8 +18,6 @@ const AuctionBiddingpage = () => {
     const [bidders, setBidders] = useState([])
     const [auctionItem, setAuctionItem] = useState({} as any)
 
-    const [bidPrice, setBidPrice] = useState(0)
-
     const convertDateAndTime = (timestamp: any) => {
         const decimalTimestamp = parseInt(timestamp.substring(2), 16);
         const date = new Date(decimalTimestamp * 1000);
@@ -83,6 +81,7 @@ const AuctionBiddingpage = () => {
                     sold: item.sold,
                     tokenId: Number(item.tokenId),
                     winner: item.winner,
+                    ended: ((new Date(convertDateAndTime(item.endTime._hex)) < new Date()) ? true : false)
                 }
                 setAuctionItem(values)
 
@@ -96,19 +95,22 @@ const AuctionBiddingpage = () => {
     if (!auctionItem.price) return (<div>Loading...</div>)
 
 
-    const placeBid = async () => {
+    const placeBid = async (bidPrice: number) => {
 
-        if (auctionItem && auctionItem.price)
-            return;
+        // console.log(auctionItem, auctionItem.price)
 
-        if (bidPrice < auctionItem.price) {
+
+        if (Number(toWei(bidPrice)._hex) < auctionItem.price) {
             Toast({
                 title: "Bid Price is less than the current bid",
                 status: "error",
                 duration: 5000,
             })
+
         }
 
+        console.log(Contract, auctionItem.price, Number(toWei(bidPrice)._hex))
+        console.log(bidPrice)
         try {
             const res = await Contract.placeBid(id, {
                 from: s.address,
@@ -129,6 +131,19 @@ const AuctionBiddingpage = () => {
                 status: "error",
                 duration: 5000,
             })
+            console.log(error)
+        }
+    }
+
+    const claimPrize = async () => {
+        const bid = auctionItem.bids;
+        try {
+            const res = await Contract.claimPrize(id, bid - 1);
+            await res.wait();
+            // sucessfllly claimed
+            console.log(res);
+        } catch (error) {
+            // you are not the winner
             console.log(error)
         }
     }
@@ -156,36 +171,48 @@ const AuctionBiddingpage = () => {
                             <Text fontSize="sm">Auction Ends at: {auctionItem.endTime}</Text>
                             <Text fontSize="sm">Current Bid: {fromWei(auctionItem.price)} ETH</Text>
                             <Text fontSize="sm">Number of Bids: {auctionItem.bids}</Text>
+                            {
+                                auctionItem.ended ? <Text fontSize="sm">Auction Ended</Text> : <Text fontSize="sm">Auction is Live</Text>
+                            }
                         </VStack>
                     </VStack>
                 </Stack>
-                <Box mt="10" w={{ base: "100%", lg: "50%" }}>
-                    <Formik
-                        initialValues={{ amount: "" }}
-                        validationSchema={
-                            Yup.object({
-                                amount: Yup.number().required("Required")
-                            })
-                        }
-                        onSubmit={(values, actions) => {
-                            console.log(values)
-                        }}
-                    >
-                        {(formik) => (
-                            <form onSubmit={formik.handleSubmit}>
-                                <FormControl id="amount"
-                                    isInvalid={Boolean(formik.errors.amount && formik.touched.amount)}
-                                >
-                                    <HStack>
-                                        <Field as={Input} name="amount" type="number" placeholder="Enter Amount" />
-                                        <Button type="submit" colorScheme="blue" size="md" w="50%" >Place a Bid</Button>
-                                    </HStack>
-                                    <FormErrorMessage color="red">{formik.errors.amount}</FormErrorMessage>
-                                </FormControl>
-                            </form>
-                        )}
-                    </Formik>
-                </Box>
+                {
+                    auctionItem.ended ? (
+                        <>
+                            <Button onClick={claimPrize}> Claim prize</Button>
+                        </>
+                    ) : (
+                        <Box mt="10" w={{ base: "100%", lg: "50%" }}>
+                            <Formik
+                                initialValues={{ amount: "" }}
+                                validationSchema={
+                                    Yup.object({
+                                        amount: Yup.number().required("Required")
+                                    })
+                                }
+                                onSubmit={(values, actions) => {
+                                    console.log(values)
+                                    placeBid(values.amount)
+                                }}
+                            >
+                                {(formik) => (
+                                    <form onSubmit={formik.handleSubmit}>
+                                        <FormControl id="amount"
+                                            isInvalid={Boolean(formik.errors.amount && formik.touched.amount)}
+                                        >
+                                            <HStack>
+                                                <Field as={Input} name="amount" type="number" placeholder="Enter Amount" />
+                                                <Button type="submit" colorScheme="blue" size="md" w="50%" >Place a Bid</Button>
+                                            </HStack>
+                                            <FormErrorMessage color="red">{formik.errors.amount}</FormErrorMessage>
+                                        </FormControl>
+                                    </form>
+                                )}
+                            </Formik>
+                        </Box>
+                    )
+                }
                 <TableContainer mt="7" w={{ base: "100%", lg: "50%" }} maxH={"40vh"} overflowY={"scroll"} border="1px solid" borderColor={useColorModeValue('gray.100', 'gray.500')} className="bid-table">
                     <Table variant='unstyled' size={"lg"} overflow={"scroll"} h="300px" overflowY={"hidden"}>
                         <Thead>
@@ -200,7 +227,7 @@ const AuctionBiddingpage = () => {
                                     return (
                                         <Tr key={index}>
                                             <Td>{bidder.bidder}</Td>
-                                            <Td isNumeric textAlign={"right"}>{bidder.amount}</Td>
+                                            <Td isNumeric textAlign={"right"}>{fromWei(bidder.amount)}</Td>
                                         </Tr>
                                     )
                                 })
@@ -209,26 +236,7 @@ const AuctionBiddingpage = () => {
                                 <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
                                 <Td isNumeric textAlign={"right"}>25.4</Td>
                             </Tr>
-                            <Tr>
-                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
-                                <Td isNumeric textAlign={"right"}>30.48</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
-                                <Td isNumeric textAlign={"right"}>0.91444</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
-                                <Td isNumeric textAlign={"right"}>0.91444</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
-                                <Td isNumeric textAlign={"right"}>0.91444</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
-                                <Td isNumeric textAlign={"right"}>0.91444</Td>
-                            </Tr>
+
                         </Tbody>
                     </Table>
                 </TableContainer>

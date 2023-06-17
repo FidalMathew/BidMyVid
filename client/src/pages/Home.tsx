@@ -28,21 +28,25 @@ const Homecomponent = () => {
             let arr: any = [];
             const res = await Contract.getAllAuctions()
             res.map((item: any) => {
-                let values = {
-                    biddable: item.biddable,
-                    bids: Number(item.bids._hex),
-                    description: item.description,
-                    endTime: convertDateAndTime(item.endTime._hex),
-                    image: item.image,
-                    live: item.live,
-                    name: item.name,
-                    owner: item.owner,
-                    price: Number(item.price),
-                    sold: item.sold,
-                    tokenId: Number(item.tokenId),
-                    winner: item.winner,
+
+                if (item.live) {
+
+                    let values = {
+                        biddable: item.biddable,
+                        bids: Number(item.bids._hex),
+                        description: item.description,
+                        endTime: convertDateAndTime(item.endTime._hex),
+                        image: item.image,
+                        live: item.live,
+                        name: item.name,
+                        owner: item.owner,
+                        price: Number(item.price),
+                        sold: item.sold,
+                        tokenId: Number(item.tokenId),
+                        winner: item.winner,
+                    }
+                    arr.push(values);
                 }
-                arr.push(values);
             })
             console.log(arr)
             setAuctionItems(arr)
