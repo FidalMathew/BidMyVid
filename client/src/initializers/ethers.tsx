@@ -95,3 +95,18 @@ export const followers = async (address: string) => {
 
     return subscribers
 }
+
+export const getChannel = async (address: string) => {
+    try {
+
+        const channelData = await PushAPI.channels.getChannel({
+            channel: `eip155:5:${address}`, // channel address in CAIP
+            env: 'staging'
+        });
+        console.log(channelData)
+        return true;
+
+    } catch (error) {
+        return false
+    }
+}
