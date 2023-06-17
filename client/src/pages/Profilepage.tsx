@@ -33,18 +33,7 @@ const Profilepage = () => {
     const [update, setUpdate] = React.useState(true)
     const [optedIn, setOptedIn] = React.useState(false)
 
-    const [hasChannel, setHasChannel] = React.useState(false)
     const toast = useToast()
-
-    React.useEffect(() => {
-        const isChannel = async () => {
-            const res = await getChannel(id as string)
-            setHasChannel(res)
-        }
-        if (id)
-            isChannel()
-    }, [id])
-
 
     React.useEffect(() => {
         const getAllAuctions = async () => {
@@ -109,7 +98,7 @@ const Profilepage = () => {
         }
         getFollowers()
         getFollowing()
-    }, [id, hasChannel, s.address])
+    }, [id, s.address])
 
     const [auctionLoading, setAuctionLoading] = React.useState(false)
 
@@ -160,18 +149,20 @@ const Profilepage = () => {
                             {/* following */}
                             <chakra.span ml="2">Following: {userfollowing.length}</chakra.span>
                         </Text>
-
-                        {!optedIn ?
-                            <Button size="xs" onClick={() => optIn(id, s.address)}>Follow</Button>
-                            :
-                            <Button size="xs" onClick={() => optOut(id, s.address)} >Unfollow</Button>
-                        }
                         {
-                            // hasChannel &&
-                            // <a ref="www.google.com" target="_blank">
-                            //     <Button size="xs" ></Button>
-                            // </a>
+                            id === s.address ? (
+                                <>
+                                    {!optedIn ?
+                                        <Button size="xs" onClick={() => optIn(id, s.address)}>Follow</Button>
+                                        :
+                                        <Button size="xs" onClick={() => optOut(id, s.address)} >Unfollow</Button>
+                                    }
+                                </>
+                            ) : (
+                                <></>
+                            )
                         }
+
 
                     </VStack>
                 </HStack>
