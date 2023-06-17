@@ -131,6 +131,9 @@ const Navbar = () => {
                         <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/create')}>
                             Create
                         </Button>
+                        <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/earning')}>
+                            Earning
+                        </Button>
                         <Menu>
                             <MenuButton as={Button} size="sm" px={0} py={0} rounded="full">
                                 <Avatar size="sm" src={'/avatar.png'} />

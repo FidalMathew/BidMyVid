@@ -8,10 +8,13 @@ import { useState } from "react"
 import { Field, Formik } from "formik"
 import * as Yup from 'yup'
 import authStore from "./stores/authStore"
+import { Polybase } from "@polybase/client";
 
-const AuctionBiddingpage = () => {
+const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
+    const db = new Polybase({
+        defaultNamespace: polyKey,
+    });
     const navigate = useNavigate()
-
     const { id } = useParams()
     const s = authStore()
     // console.log(id)
@@ -116,6 +119,7 @@ const AuctionBiddingpage = () => {
         console.log(Contract, auctionItem.price, Number(toWei(bidPrice)._hex))
         console.log(bidPrice)
         try {
+            console.log(toWei(bidPrice))
             const res = await Contract.placeBid(id, {
                 from: s.address,
                 value: toWei(bidPrice)
@@ -142,6 +146,8 @@ const AuctionBiddingpage = () => {
     const claimPrize = async () => {
         const bid = auctionItem.bids;
         try {
+            const { data } = await db.collection('BidKaro').get();
+            const saveDb = await db.collection('BidKaro').create([String(data.length + 1), String(id), String(auctionItem.price), String(new Date()), String(auctionItem.winner), String(auctionItem.owner)])
             const res = await Contract.claimPrize(id, bid - 1);
             await res.wait();
             // sucessfllly claimed
@@ -152,7 +158,7 @@ const AuctionBiddingpage = () => {
         }
     }
 
-    if(auctionItem.live === false){
+    if (auctionItem.live === false) {
         return (
             <Center h="100vh">
                 <Text fontSize="3xl">NFT not for sale, explore other NFTs</Text>

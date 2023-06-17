@@ -27,6 +27,7 @@ const VITE_LIVEPEER_STUDIO_API_KEY = import.meta.env.VITE_LIVEPEER_STUDIO_API_KE
 console.log(VITE_LIVEPEER_STUDIO_API_KEY, 'api key')
 const VITE_PINATA_API_KEY = import.meta.env.VITE_PINATA_API_KEY || '';
 const VITE_PINATA_SECRET_API_KEY = import.meta.env.VITE_PINATA_SECRET_API_KEY || '';
+const polybaseKey = import.meta.env.VITE_POLYBASE_KEY || '';
 // console.log('VITE_LIVEPEER_STUDIO_API_KEY', VITE_LIVEPEER_STUDIO_API_KEY);
 
 const clientLivepeer = createReactClient({
@@ -65,8 +66,8 @@ function App() {
           <Route path="/create" element={<Create apiKey={VITE_PINATA_API_KEY} secretKey={VITE_PINATA_SECRET_API_KEY} />} />
           <Route path="/videos/:id" element={<Videopage />} />
           <Route path="/profile/:id" element={<Profilepage />} />
-          <Route path="/earning" element={<Earning />} />
-          <Route path="/bid/:id" element={<AuctionBiddingpage />} />
+          <Route path="/earning" element={<Earning polyKey={polybaseKey} />} />
+          <Route path="/bid/:id" element={<AuctionBiddingpage polyKey={polybaseKey} />} />
           <Route path="/notification" element={<Notifications />} />
         </Routes>
       </BrowserRouter>
