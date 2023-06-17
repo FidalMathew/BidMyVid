@@ -54,8 +54,12 @@ const Videopage = () => {
                     </Box>
                     {/* created by and avatar in sm size */}
                     <HStack>
-                        <Avatar size="sm" />
-                        <Text fontSize="sm">Owner:{" "} <chakra.span as="u">{state?.owner?.slice(0, 7) + '...' + state?.owner?.slice(-4)}</chakra.span> </Text>
+                        <Avatar size="md" src="/avatar.png" />
+                        <VStack align={"left"} spacing="0">
+                            <Text fontSize="sm">Owner:{" "} <chakra.span as="u">{state?.owner?.slice(0, 7) + '...' + state?.owner?.slice(-4)}</chakra.span> </Text>
+                            {/* no of followers */}
+                            <Text fontSize="sm">Followers:{" "} 0 </Text>
+                        </VStack>
                     </HStack>
                     <Text fontSize="md" textAlign={"center"}>{state?.description}</Text>
                 </VStack>

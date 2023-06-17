@@ -129,12 +129,20 @@ const Profilepage = () => {
             <Navbar />
             <VStack>
                 <HStack spacing={4} p="10">
-                    <Avatar size="xl" src={'/avatar.png'} />
+                    <Avatar size="2xl" src={'/avatar.png'} />
                     <VStack align={"left"} spacing="2">
                         {/* <Box fontWeight="bold">Fidal Mathew</Box> */}
                         <Text color="gray.600" fontSize="md">{id?.slice(0,7) + '...' + id?.slice(-6)}</Text>
                         <Text color="gray.500" fontSize="sm">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
-                        <Button size="xs">Follow</Button>
+                        <Text color="gray.500" fontSize="sm">Followers: <chakra.span>50</chakra.span> 
+                            {/* following */}
+                            <chakra.span ml="2">Following: 50</chakra.span>
+                        </Text>
+                       {true? <Button size="xs">Follow
+                       </Button>
+                        
+                       :
+                        <Button size="xs">Unfollow</Button>}
                     </VStack>
                 </HStack>
                 <Box m={"auto"} p="6" w={{ base: "100vw", xl: "50vw" }}>
