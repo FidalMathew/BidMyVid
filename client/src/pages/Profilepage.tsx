@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast, Skeleton } from "@chakra-ui/react"
+import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast, Skeleton, Heading } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
 import { Contract, followers, following, optIn, optOut, sendNotification } from "../initializers/ethers"
 import * as React from "react"
@@ -185,49 +185,9 @@ const Profilepage = () => {
                                 {/*  */}
                                 {
                                     // for no holdings
-                                    holdings.length == 0 ?
-                                        (
-                                            <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0} mb="7">
-                                                <Grid
-                                                    templateRows={{ base: 'auto auto', md: 'auto' }}
-                                                    w="100%"
-                                                    templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
-                                                    p={{ base: 2, sm: 4 }}
-                                                    gap={3}
-                                                    alignItems="center"
-                                                    _hover={{ bg: 'gray.200' }}
-                                                >
-                                                    <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
-                                                        <Skeleton h="20px" w="80%" mb={2} />
-                                                        <Skeleton h="16px" w="100%" />
-                                                    </Box>
-                                                    <HStack
-                                                        spacing={{ base: 0, sm: 3 }}
-                                                        alignItems="center"
-                                                        fontWeight="medium"
-                                                        fontSize={{ base: 'xs', sm: 'sm' }}
-                                                        color="gray.600"
-                                                    >
-                                                        {/* Add any skeleton elements you need */}
-                                                    </HStack>
-                                                    <Stack
-                                                        spacing={2}
-                                                        direction="row"
-                                                        fontSize={{ base: 'sm', sm: 'md' }}
-                                                        justifySelf="flex-end"
-                                                        alignItems="center"
-                                                    >
-                                                        <Button size="sm" leftIcon={<MdMoney />} isDisabled>
-                                                            Bid in Auction
-                                                        </Button>
-                                                        <Button size="sm" leftIcon={<FaEye />} isDisabled>
-                                                            View
-                                                        </Button>
-                                                    </Stack>
-                                                </Grid>
-                                                <Divider m={0} />
-                                            </VStack>
-                                        ) : null
+                                    holdings.length == 0 ? (
+                                        <Heading textAlign={"center"} size="md" mb="4">No holdings</Heading>
+                                    ) : null
                                 }
                                 {
                                     holdings.map((item: any, index: number) => {
@@ -240,7 +200,6 @@ const Profilepage = () => {
                                                     p={{ base: 2, sm: 4 }}
                                                     gap={3}
                                                     alignItems="center"
-                                                    _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
                                                 >
                                                     <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
                                                         <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
@@ -290,52 +249,15 @@ const Profilepage = () => {
                                 {/*  */}
                                 {
                                     // for no auctions
-                                    auctions.length == 0 ?
-                                        (
-                                            <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
-                                                <Grid
-                                                    templateRows={{ base: 'auto auto', md: 'auto' }}
-                                                    w="100%"
-                                                    templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
-                                                    p={{ base: 2, sm: 4 }}
-                                                    gap={3}
-                                                    alignItems="center"
-                                                    _hover={{ bg: 'gray.200' }}
-                                                >
-                                                    <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
-                                                        <Skeleton h="20px" w="80%" mb={2} />
-                                                        <Skeleton h="16px" w="100%" />
-                                                    </Box>
-                                                    <HStack
-                                                        spacing={{ base: 0, sm: 3 }}
-                                                        alignItems="center"
-                                                        fontWeight="medium"
-                                                        fontSize={{ base: 'xs', sm: 'sm' }}
-                                                        color="gray.600"
-                                                    >
-                                                        {/* Add any skeleton elements you need */}
-                                                    </HStack>
-                                                    <Stack
-                                                        spacing={2}
-                                                        direction="row"
-                                                        fontSize={{ base: 'sm', sm: 'md' }}
-                                                        justifySelf="flex-end"
-                                                        alignItems="center"
-                                                    >
-                                                        <Button size="sm" leftIcon={<FaEye />} isDisabled>
-                                                            View Auction
-                                                        </Button>
-                                                    </Stack>
-                                                </Grid>
-                                                <Divider m={0} />
-                                            </VStack>
-                                        ) : null
+                                    auctions.length == 0 ? (
+                                        <Heading textAlign={"center"} size="md" mb="4">No auctions</Heading>
+                                    ) : null
                                 }
                                 {
                                     auctions.map((item: any, index: number) => {
                                         return (
 
-                                            <VStack key={index} border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
+                                            <VStack key={index} border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0} mb="7">
                                                 <Grid
                                                     templateRows={{ base: 'auto auto', md: 'auto' }}
                                                     w="100%"
@@ -343,7 +265,6 @@ const Profilepage = () => {
                                                     p={{ base: 2, sm: 4 }}
                                                     gap={3}
                                                     alignItems="center"
-                                                    _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
                                                 >
                                                     <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
                                                         <chakra.h3 as={ChakraLink} href={""} isExternal fontWeight="bold" fontSize="lg">
@@ -401,20 +322,6 @@ const ArticleStat = ({ icon, value }: { icon: IconType; value: number }) => {
         </Flex>
     );
 };
-
-const ArticleSettingLink = ({ label }: { label: string }) => {
-    return (
-        <chakra.p
-            as={ChakraLink}
-            _hover={{ bg: useColorModeValue('gray.400', 'gray.600') }}
-            p={1}
-            rounded="md"
-        >
-            {label}
-        </chakra.p>
-    );
-};
-
 
 
 export default Profilepage

@@ -23,33 +23,43 @@ const Homecomponent = () => {
     };
     const [auctionitems, setAuctionItems] = React.useState([])
 
+    const [fetchAuctionLoading, setFetchAuctionLoading] = React.useState(false)
+
     React.useEffect(() => {
         const getAllAuctions = async () => {
-            let arr: any = [];
-            const res = await Contract.getAllAuctions()
-            res.map((item: any) => {
+            setFetchAuctionLoading(true)
+            try {
+                let arr: any = [];
+                const res = await Contract.getAllAuctions()
+                res.map((item: any) => {
 
-                if (item.live) {
+                    if (item.live) {
 
-                    let values = {
-                        biddable: item.biddable,
-                        bids: Number(item.bids._hex),
-                        description: item.description,
-                        endTime: convertDateAndTime(item.endTime._hex),
-                        image: item.image,
-                        live: item.live,
-                        name: item.name,
-                        owner: item.owner,
-                        price: Number(item.price),
-                        sold: item.sold,
-                        tokenId: Number(item.tokenId),
-                        winner: item.winner,
+                        let values = {
+                            biddable: item.biddable,
+                            bids: Number(item.bids._hex),
+                            description: item.description,
+                            endTime: convertDateAndTime(item.endTime._hex),
+                            image: item.image,
+                            live: item.live,
+                            name: item.name,
+                            owner: item.owner,
+                            price: Number(item.price),
+                            sold: item.sold,
+                            tokenId: Number(item.tokenId),
+                            winner: item.winner,
+                        }
+                        arr.push(values);
                     }
-                    arr.push(values);
-                }
-            })
-            console.log(arr)
-            setAuctionItems(arr)
+                })
+                console.log(arr)
+                setAuctionItems(arr)
+            } catch (err) {
+                console.log(err)
+            } finally {
+                setFetchAuctionLoading(false)
+            }
+
         }
         getAllAuctions()
     }, [Contract])
@@ -64,7 +74,7 @@ const Homecomponent = () => {
                 <Grid templateColumns='repeat(1, 1fr)' gap={0} m="auto" w="100%">
                     {/* make a skeleton */}
                     {
-                        auctionitems.length === 0 ? (
+                        fetchAuctionLoading && (
                             Array.from({ length: 3 }).map((_, index) => (
                                 <Container key={index} p={{ base: 5, md: 10 }} maxW="2xl">
                                     <Box
@@ -100,7 +110,13 @@ const Homecomponent = () => {
                                     </Box>
                                 </Container>
                             ))
-                        ) : null
+                        )
+                    }
+                    
+                    {
+                        fetchAuctionLoading==false && auctionitems.length === 0 && (
+                            <Text fontSize="4xl" textAlign="center" fontWeight="bold" mt="10">No Auctions</Text>
+                        )
                     }
 
                     {auctionitems.map((item: any, index: any) => {

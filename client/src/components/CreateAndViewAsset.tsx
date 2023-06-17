@@ -214,8 +214,8 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                     <Text fontSize="sm">Go Back</Text>
                 </HStack>
 
-                <VStack justifyContent="center" alignItems="center" align={"left"} minH="100vh" p="10">
-                    <Heading as="h1" size="xl" mb="4">
+                <VStack justifyContent="center" alignItems="center" align={"left"} minH="90vh" maxW="5xl" m="auto">
+                    <Heading size="xl" mb="4">
                         Create an NFT
                     </Heading>
                     <button onClick={() => mintNFT("")}>Mint NFT </button>
