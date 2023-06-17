@@ -1,14 +1,16 @@
 import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
-import { Contract, followers, following } from "../initializers/ethers"
+import { Contract, followers, following, optIn, optOut, getChannel } from "../initializers/ethers"
 import * as React from "react"
 import authStore from "../stores/authStore"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { IconType } from "react-icons"
 import { FaRegComment, FaRegHeart, FaRegEye, FaEye } from 'react-icons/fa';
 import { MdMoney } from "react-icons/md"
 
 const Profilepage = () => {
+
+    const s = authStore()
     const { id } = useParams();
     const convertDateAndTime = (timestamp: any) => {
         const decimalTimestamp = parseInt(timestamp.substring(2), 16);
@@ -29,7 +31,20 @@ const Profilepage = () => {
     const [auctions, setAuctions] = React.useState([])
 
     const [update, setUpdate] = React.useState(true)
+    const [optedIn, setOptedIn] = React.useState(false)
+
+    const [hasChannel, setHasChannel] = React.useState(false)
     const toast = useToast()
+
+    React.useEffect(() => {
+        const isChannel = async () => {
+            const res = await getChannel(id as string)
+            setHasChannel(res)
+        }
+        if (id)
+            isChannel()
+    }, [id])
+
 
     React.useEffect(() => {
         const getAllAuctions = async () => {
@@ -74,7 +89,12 @@ const Profilepage = () => {
         const getFollowers = async () => {
             try {
                 const res = await followers(id as string)
-                setUserFollowers(res.subscribers as string[])
+                res.subscribers.map((item: any) => {
+                    if (item.toLowerCase() === s.address.toLowerCase()) {
+                        setOptedIn(true)
+                    }
+                })
+                setUserFollowers(res.subscribers as string[] || [])
             } catch (error) {
                 console.log(error)
             }
@@ -82,14 +102,14 @@ const Profilepage = () => {
         const getFollowing = async () => {
             try {
                 const res = await following(id as string)
-                setUserFollowing(res.subscriptions)
+                setUserFollowing(res.subscriptions || [])
             } catch (error) {
                 console.log(error)
             }
         }
         getFollowers()
         getFollowing()
-    }, [id])
+    }, [id, hasChannel, s.address])
 
     const [auctionLoading, setAuctionLoading] = React.useState(false)
 
@@ -132,17 +152,27 @@ const Profilepage = () => {
                     <Avatar size="2xl" src={'/avatar.png'} />
                     <VStack align={"left"} spacing="2">
                         {/* <Box fontWeight="bold">Fidal Mathew</Box> */}
-                        <Text color="gray.600" fontSize="md">{id?.slice(0,7) + '...' + id?.slice(-6)}</Text>
+                        <Text color="gray.600" fontSize="md">{id?.slice(0, 7) + '...' + id?.slice(-6)}</Text>
                         <Text color="gray.500" fontSize="sm">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
-                        <Text color="gray.500" fontSize="sm">Followers: <chakra.span>50</chakra.span> 
+
+
+                        <Text color="gray.500" fontSize="sm">Followers: <chakra.span>{userfollowers.length}</chakra.span>
                             {/* following */}
-                            <chakra.span ml="2">Following: 50</chakra.span>
+                            <chakra.span ml="2">Following: {userfollowing.length}</chakra.span>
                         </Text>
-                       {true? <Button size="xs">Follow
-                       </Button>
-                        
-                       :
-                        <Button size="xs">Unfollow</Button>}
+
+                        {!optedIn ?
+                            <Button size="xs" onClick={() => optIn(id, s.address)}>Follow</Button>
+                            :
+                            <Button size="xs" onClick={() => optOut(id, s.address)} >Unfollow</Button>
+                        }
+                        {
+                            // hasChannel &&
+                            // <a ref="www.google.com" target="_blank">
+                            //     <Button size="xs" ></Button>
+                            // </a>
+                        }
+
                     </VStack>
                 </HStack>
                 <Box m={"auto"} p="6" w={{ base: "100vw", xl: "50vw" }}>
