@@ -1,20 +1,24 @@
-import { Box, Button, FormControl, FormErrorMessage, HStack, Icon, Input, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr, VStack, useColorModeValue } from "@chakra-ui/react"
+import { Box, Button, FormControl, FormErrorMessage, HStack, Icon, Input, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Toast, Tr, VStack, useColorModeValue } from "@chakra-ui/react"
 import * as React from 'react'
 import { AccessPlayer } from "./components/AccessPlayer"
 import { useNavigate, useParams } from "react-router-dom"
 import { FiArrowLeft } from "react-icons/fi"
-import { Contract, fromWei } from "../src/initializers/ethers"
+import { Contract, fromWei, toWei } from "../src/initializers/ethers"
 import { useState } from "react"
 import { Field, Formik } from "formik"
 import * as Yup from 'yup'
+import authStore from "./stores/authStore"
 
 const AuctionBiddingpage = () => {
     const navigate = useNavigate()
 
     const { id } = useParams()
+    const s = authStore()
     // console.log(id)
     const [bidders, setBidders] = useState([])
     const [auctionItem, setAuctionItem] = useState({} as any)
+
+    const [bidPrice, setBidPrice] = useState(0)
 
     const convertDateAndTime = (timestamp: any) => {
         const decimalTimestamp = parseInt(timestamp.substring(2), 16);
@@ -91,6 +95,45 @@ const AuctionBiddingpage = () => {
 
     if (!auctionItem.price) return (<div>Loading...</div>)
 
+
+    const placeBid = async () => {
+
+        if (auctionItem && auctionItem.price)
+            return;
+
+        if (bidPrice < auctionItem.price) {
+            Toast({
+                title: "Bid Price is less than the current bid",
+                status: "error",
+                duration: 5000,
+            })
+        }
+
+        try {
+            const res = await Contract.placeBid(id, {
+                from: s.address,
+                value: toWei(bidPrice)
+
+            })
+            await res.wait()
+            Toast({
+                title: "Bid Placed Successfully",
+                status: "success",
+                duration: 5000,
+            })
+            console.log(res)
+        }
+        catch (error) {
+            Toast({
+                title: "Unkwown Error",
+                status: "error",
+                duration: 5000,
+            })
+            console.log(error)
+        }
+    }
+
+
     return (
         <Box minH="100%">
             <HStack h="5vh" p="7">
@@ -116,7 +159,7 @@ const AuctionBiddingpage = () => {
                         </VStack>
                     </VStack>
                 </Stack>
-                <Box mt="10" w={{base: "100%", lg: "50%"}}>
+                <Box mt="10" w={{ base: "100%", lg: "50%" }}>
                     <Formik
                         initialValues={{ amount: "" }}
                         validationSchema={

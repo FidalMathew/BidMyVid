@@ -9,7 +9,7 @@ export const AccessPlayer = ({ playbackId }) => {
     const [accessKey, setAccessKey] = useState("")
     const [sig, setSig] = useState("")
     const s = authStore()
-    // console.log(s)
+    console.log(s)
 
 
     let access;
