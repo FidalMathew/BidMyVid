@@ -65,41 +65,44 @@ const Homecomponent = () => {
                     {/* make a skeleton */}
                     {
                         auctionitems.length === 0 ? (
-                            <Container p={{ base: 5, md: 10 }} maxW="2xl">
-                                <Box
-                                    borderWidth="1px"
-                                    _hover={{ shadow: 'lg' }}
-                                    rounded="md"
-                                    overflow="hidden"
-                                // bg="gray.200"
-                                >
-                                    <Box position="relative" w="100%" h="300px" zIndex="0">
-                                        <Skeleton h="100%" w="100%" />
+                            Array.from({ length: 3 }).map((_, index) => (
+                                <Container key={index} p={{ base: 5, md: 10 }} maxW="2xl">
+                                    <Box
+                                        borderWidth="1px"
+                                        _hover={{ shadow: 'lg' }}
+                                        rounded="md"
+                                        overflow="hidden"
+                                    // bg="gray.200"
+                                    >
+                                        <Box position="relative" w="100%" h="300px" zIndex="0">
+                                            <Skeleton h="100%" w="100%" />
+                                        </Box>
+                                        <Box p={{ base: 3, sm: 5 }}>
+                                            <VStack align="start" mb={6}>
+                                                <Skeleton h="20px" w="80%" />
+                                                <Skeleton h="16px" w="100%" />
+                                                <Skeleton h="12px" w="60%" />
+                                            </VStack>
+                                            <Stack justify="end" direction={{ base: 'column', sm: 'row' }} spacing={{ base: 2, sm: 0 }}>
+                                                <Button
+                                                    textTransform="uppercase"
+                                                    lineHeight="inherit"
+                                                    rounded="md"
+                                                    colorScheme="gray"
+                                                    variant="solid"
+                                                    size="sm"
+                                                    isDisabled
+                                                >
+                                                    Place a Bid
+                                                </Button>
+                                            </Stack>
+                                        </Box>
                                     </Box>
-                                    <Box p={{ base: 3, sm: 5 }}>
-                                        <VStack align="start" mb={6}>
-                                            <Skeleton h="20px" w="80%" />
-                                            <Skeleton h="16px" w="100%" />
-                                            <Skeleton h="12px" w="60%" />
-                                        </VStack>
-                                        <Stack justify="end" direction={{ base: 'column', sm: 'row' }} spacing={{ base: 2, sm: 0 }}>
-                                            <Button
-                                                textTransform="uppercase"
-                                                lineHeight="inherit"
-                                                rounded="md"
-                                                colorScheme="gray"
-                                                variant="solid"
-                                                size="sm"
-                                                isDisabled
-                                            >
-                                                Place a Bid
-                                            </Button>
-                                        </Stack>
-                                    </Box>
-                                </Box>
-                            </Container>
+                                </Container>
+                            ))
                         ) : null
                     }
+
                     {auctionitems.map((item: any, index: any) => {
                         return <Cards auctionItem={item} key={index} />
                     })}
