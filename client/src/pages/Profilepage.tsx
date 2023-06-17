@@ -1,6 +1,6 @@
 import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast, Skeleton } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
-import { Contract, followers, following, optIn, optOut, getChannel } from "../initializers/ethers"
+import { Contract, followers, following, optIn, optOut, sendNotification } from "../initializers/ethers"
 import * as React from "react"
 import authStore from "../stores/authStore"
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -109,7 +109,9 @@ const Profilepage = () => {
             const res = await Contract.offerAuction(tokenId, true);
             await res.wait()
             setUpdate(!update)
-            console.log(res)
+
+            sendNotification(s.address)
+            // console.log(res)
             toast({
                 title: "Success",
                 description: "Auction offered successfully",
