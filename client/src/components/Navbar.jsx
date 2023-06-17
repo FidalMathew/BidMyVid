@@ -133,7 +133,7 @@ const Navbar = () => {
                         </Button>
                         <Menu>
                             <MenuButton as={Button} size="sm" px={0} py={0} rounded="full">
-                                <Avatar size="sm" src={'https://avatars2.githubusercontent.com/u/37842853?v=4'} />
+                                <Avatar size="sm" src={'/avatar.png'} />
                             </MenuButton>
                             <MenuList
                                 zIndex={5}

@@ -152,6 +152,14 @@ const AuctionBiddingpage = () => {
         }
     }
 
+    if(auctionItem.live === false){
+        return (
+            <Center h="100vh">
+                <Text fontSize="3xl">NFT not for sale, explore other NFTs</Text>
+            </Center>
+        )
+    }
+
 
     return (
         <Box minH="100%">
