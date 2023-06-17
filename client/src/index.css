@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 .bid-table::-webkit-scrollbar {
     width: 0.4em;
+    height: 0.4em;
 }
 
 .bid-table::-webkit-scrollbar-track {

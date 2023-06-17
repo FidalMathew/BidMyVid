@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormErrorMessage, HStack, Icon, Input, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Toast, Tr, VStack, useColorModeValue } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, FormControl, FormErrorMessage, HStack, Heading, Icon, Input, SimpleGrid, Spinner, Stack, Table, chakra, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Toast, Tr, VStack, useColorModeValue, Tooltip } from "@chakra-ui/react"
 import * as React from 'react'
 import { AccessPlayer } from "./components/AccessPlayer"
 import { useNavigate, useParams } from "react-router-dom"
@@ -92,7 +92,11 @@ const AuctionBiddingpage = () => {
         func()
     }, [id])
 
-    if (!auctionItem.price) return (<div>Loading...</div>)
+    if (!auctionItem.price) return (
+        <Center h="100vh">
+            <Spinner size="xl" />
+        </Center>
+    )
 
 
     const placeBid = async (bidPrice: number) => {
@@ -159,25 +163,79 @@ const AuctionBiddingpage = () => {
             </HStack>
 
             <VStack p="10" pl="10" pr="10">
-                <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-around" w="50%" h="auto" alignItems="flex-start" spacing={"10"}>
-                    <Box w={{ base: "100%", lg: "50%" }} h="full" className="player">
+                <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-around" w="60%" h={{ base: "100vh", md: "30vh" }} alignItems="flex-start" spacing={"10"}>
+                    <Flex w={{ base: "full", lg: "45%" }} shadow={"xl"}>
                         <AccessPlayer playbackId={auctionItem.image} />
-                    </Box>
-                    <VStack align="left" w={{ base: "100%", lg: "50%" }} spacing={10}>
-                        <VStack spacing={"3"} align="left">
+                    </Flex>
+                    {/* <Center borderRadius="md" overflow="hidden" w="100%" h="full" bg="gray.400">
                             <Text fontSize="3xl" fontWeight={"semibold"}>{auctionItem.name}</Text>
+                        </Center> */}
+                    <Box w={{ base: "100%", lg: "50%" }} h="full" p="5" shadow="lg" rounded="xl">
+                        <VStack spacing={"1"} align="left">
+                            <Flex justifyContent={"space-between"}>
+                                <HStack>
+
+                                    <Text fontSize="3xl" fontWeight={"semibold"} >{auctionItem.name}</Text>
+                                    {
+                                        auctionItem.ended ?
+                                            <Tooltip label="Auction Ended" aria-label="A tooltip">
+                                                <Box h="10px" w="10px" bg="red.500" borderRadius="full">
+                                                </Box>
+                                            </Tooltip>
+                                            :
+                                            <Tooltip label="Auction Live" aria-label="A tooltip">
+                                                <Box h="10px" w="10px" bg="green.500" borderRadius="full" display="inline-block" />
+                                            </Tooltip>
+                                    }
+                                </HStack>
+                                <Text fontSize="xs" mt="2">{new Date(auctionItem.endTime)
+                                    .toLocaleString('en-US', { timeZone: 'UTC' })
+                                }</Text>
+                            </Flex>
                             <Text>{auctionItem.description}</Text>
-                            <Text fontSize={"sm"}>Owner: {auctionItem.owner}</Text>
-                            <Text fontSize="sm">Auction Ends at: {auctionItem.endTime}</Text>
-                            <Text fontSize="sm">Current Bid: {fromWei(auctionItem.price)} ETH</Text>
-                            <Text fontSize="sm">Number of Bids: {auctionItem.bids}</Text>
-                            {
-                                auctionItem.ended ? <Text fontSize="sm">Auction Ended</Text> : <Text fontSize="sm">Auction is Live</Text>
+                            <Text fontSize={"xs"}>Owner: {auctionItem.owner}</Text>
+                            {/* <Text fontSize="sm">Auction Ends at: {auctionItem.endTime}</Text> */}
+                            <Text fontSize="md">Current Bid: <chakra.span fontWeight={"semibold"}>{fromWei(auctionItem.price)}</chakra.span>  ETH</Text>
+                            {auctionItem.ended ? (
+                                <Box mt="10" w={{ base: "100%", lg: "100%" }}>
+                                    <Button w="full" onClick={() => claimPrize}> Claim prize</Button>
+                                </Box>
+                            ) : (
+                                <Box mt="10" w={{ base: "100%", lg: "100%" }}>
+                                    <Formik
+                                        initialValues={{ amount: "" }}
+                                        validationSchema={
+                                            Yup.object({
+                                                amount: Yup.number().required("Required")
+                                            })
+                                        }
+                                        onSubmit={(values, actions) => {
+                                            console.log(values)
+                                            placeBid(Number(values.amount))
+                                        }}
+                                    >
+                                        {(formik) => (
+                                            <form onSubmit={formik.handleSubmit}>
+                                                <FormControl id="amount"
+                                                    isInvalid={Boolean(formik.errors.amount && formik.touched.amount)}
+                                                >
+                                                    <HStack>
+                                                        <Field as={Input} name="amount" type="number" placeholder="Enter Amount" />
+                                                        <Button type="submit" colorScheme="blue" size="md" w="50%" >Place a Bid</Button>
+                                                    </HStack>
+                                                    <FormErrorMessage color="red">{formik.errors.amount}</FormErrorMessage>
+                                                </FormControl>
+                                            </form>
+                                        )}
+                                    </Formik>
+                                </Box>
+                            )
+
                             }
                         </VStack>
-                    </VStack>
+                    </Box>
                 </Stack>
-                {
+                {/* {
                     auctionItem.ended ? (
                         <>
                             <Button onClick={claimPrize}> Claim prize</Button>
@@ -193,7 +251,7 @@ const AuctionBiddingpage = () => {
                                 }
                                 onSubmit={(values, actions) => {
                                     console.log(values)
-                                    placeBid(values.amount)
+                                    placeBid(Number(values.amount))
                                 }}
                             >
                                 {(formik) => (
@@ -212,39 +270,48 @@ const AuctionBiddingpage = () => {
                             </Formik>
                         </Box>
                     )
-                }
-                <TableContainer mt="7" w={{ base: "100%", lg: "50%" }} maxH={"40vh"} overflowY={"scroll"} border="1px solid" borderColor={useColorModeValue('gray.100', 'gray.500')} className="bid-table">
-                    <Table variant='unstyled' size={"lg"} overflow={"scroll"} h="300px" overflowY={"hidden"}>
-                        <Thead>
-                            <Tr>
-                                <Th>Bidders</Th>
-                                <Th isNumeric textAlign={"right"}>Amount Bid</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {
-                                bidders.map((bidder: any, index: any) => {
-                                    return (
-                                        <Tr key={index}>
-                                            <Td>{bidder.bidder}</Td>
-                                            <Td isNumeric textAlign={"right"}>{fromWei(bidder.amount)}</Td>
-                                        </Tr>
-                                    )
-                                })
-                            }
-                            <Tr>
-                                <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
-                                <Td isNumeric textAlign={"right"}>25.4</Td>
-                            </Tr>
+                } */}
+                <VStack w="full" p="10" spacing="0">
+                    <Heading size="md" textAlign="center" color={
+                        useColorModeValue('gray.700', 'gray.200')
+                    }>Bids for this video
+                        <chakra.span> ({auctionItem.bids}) </chakra.span>
+                    </Heading>
+                    <TableContainer mt="7" w={{ base: "100%", lg: "70%" }} maxH={"40vh"} overflowY={"scroll"} border="1px solid" borderColor={useColorModeValue('gray.100', 'gray.500')} className="bid-table">
+                        <Table variant='unstyled' size={"lg"} overflow={"scroll"} overflowY={"hidden"}>
+                            <Thead>
+                                <Tr>
+                                    <Th>Bidders</Th>
+                                    <Th isNumeric textAlign={"right"}>Amount Bid</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {
+                                    bidders.map((bidder: any, index: any) => {
+                                        return (
+                                            <Tr key={index}>
+                                                <Td>{bidder.bidder}</Td>
+                                                <Td isNumeric textAlign={"right"}>{fromWei(bidder.amount)}</Td>
+                                            </Tr>
+                                        )
+                                    })
+                                }
+                                <Tr>
+                                    <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
+                                    <Td isNumeric textAlign={"right"}>25.4</Td>
+                                </Tr>
 
-                        </Tbody>
-                    </Table>
-                </TableContainer>
+                            </Tbody>
+                        </Table>
+                    </TableContainer>
+                </VStack>
+
                 {/* <Button colorScheme="blue" size="lg" w="50%" mt="10">Place a Bid</Button> */}
             </VStack>
 
         </Box>
     )
 }
+
 
 export default AuctionBiddingpage

@@ -41,17 +41,14 @@ const Navbar = () => {
                         src="https://dev-to-uploads.s3.amazonaws.com/uploads/logos/resized_logo_UQww2soKuUsjaOGNB38o.png"
                     /> */}
                     <Link to="/">
-                        <Text w={'auto'} h={12} fontSize="2xl" fontWeight="bold" color="teal.500">Steal Videos</Text>
+                        <Text w={'auto'} fontSize="2xl" fontWeight="bold" color="teal.500">BidMyVid</Text>
                     </Link>
                     <Spacer />
                     <HStack spacing={3}>
-                        <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/earning')}>
-                            Your Earning
-                        </Button>
                         <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/create')}>
                             Create
                         </Button>
-                        <Menu isLazy>
+                        <Menu>
                             <MenuButton as={Button} size="sm" px={0} py={0} rounded="full">
                                 <Avatar size="sm" src={'https://avatars2.githubusercontent.com/u/37842853?v=4'} />
                             </MenuButton>

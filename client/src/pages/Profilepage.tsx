@@ -67,21 +67,21 @@ const Profilepage = () => {
         getAllAuctions()
     }, [Contract, id, update])
 
-    const [userfollowers, setUserFollowers] = React.useState([])
+    const [userfollowers, setUserFollowers] = React.useState([] as string[])
     const [userfollowing, setUserFollowing] = React.useState([])
 
     React.useEffect(() => {
         const getFollowers = async () => {
             try {
-                const res = await followers(id)
-                setUserFollowers(res.subscribers)
+                const res = await followers(id as string)
+                setUserFollowers(res.subscribers as string[])
             } catch (error) {
                 console.log(error)
             }
         }
         const getFollowing = async () => {
             try {
-                const res = await following(id)
+                const res = await following(id as string)
                 setUserFollowing(res.subscriptions)
             } catch (error) {
                 console.log(error)
@@ -128,15 +128,16 @@ const Profilepage = () => {
         <VStack>
             <Navbar />
             <VStack>
-                <HStack spacing={4}>
-                    <Avatar size="2xl" src={'https://avatars2.githubusercontent.com/u/37842853?v=4'} />
-                    <VStack align={"left"} spacing="0">
+                <HStack spacing={4} p="10">
+                    <Avatar size="xl" src={'/avatar.png'} />
+                    <VStack align={"left"} spacing="2">
                         {/* <Box fontWeight="bold">Fidal Mathew</Box> */}
-                        <Text color="white">{id}</Text>
-                        <Text color="gray.500">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
+                        <Text color="gray.600" fontSize="md">{id?.slice(0,7) + '...' + id?.slice(-6)}</Text>
+                        <Text color="gray.500" fontSize="sm">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
+                        <Button size="xs">Follow</Button>
                     </VStack>
                 </HStack>
-                <Box m={"auto"} p="6" w={{ base: "100vw", xl: "70vw" }}>
+                <Box m={"auto"} p="6" w={{ base: "100vw", xl: "50vw" }}>
                     <Tabs position="relative" variant="unstyled" isFitted>
                         <TabList>
                             <Tab>Holdings</Tab>

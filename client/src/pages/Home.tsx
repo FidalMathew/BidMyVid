@@ -1,4 +1,4 @@
-import { Box, Text, VStack } from "@chakra-ui/react"
+import { Box, Grid, Text, VStack } from "@chakra-ui/react"
 import Cards from "../components/Cards"
 import ToggleTheme from "../components/Toggletheme"
 import Navbar from "../components/Navbar"
@@ -60,11 +60,11 @@ const Homecomponent = () => {
             <Navbar />
             <Box>
                 <Text fontSize="4xl" textAlign="center" fontWeight="bold" mt="10"></Text>
-                <VStack>
+                <Grid templateColumns='repeat(1, 1fr)' gap={0} m="auto" w="100%">
                     {auctionitems.map((item: any, index: any) => {
                         return <Cards auctionItem={item} key={index} />
                     })}
-                </VStack>
+                </Grid>
             </Box>
         </>
     )

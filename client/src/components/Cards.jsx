@@ -18,7 +18,7 @@ const Cards = ({ auctionItem }) => {
     const navigate = useNavigate()
     return (
         <>
-            <Container p={{ base: 5, md: 10 }} maxW="3xl">
+            <Container p={{ base: 5, md: 10 }} maxW="2xl">
                 <Box
                     borderWidth="1px"
                     _hover={{ shadow: 'lg' }}
@@ -26,7 +26,7 @@ const Cards = ({ auctionItem }) => {
                     overflow="hidden"
                     bg={useColorModeValue('white', 'gray.800')}
                 >
-                    <Box position="relative" w="100%">
+                    <Box position="relative" w="100%" h="auto">
                         {/* <Image
                         style={{ filter: "blur(8px)" }}
                         src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80"
