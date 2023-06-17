@@ -206,124 +206,126 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
 
     return (
         <>
-            <VStack justifyContent="center" alignItems="center" align={"left"} minH="100vh" p="10">
-                <HStack>
+            <Box minH="100vh">
+                <HStack h="5vh" p="7">
                     <Icon as={FiArrowLeft} onClick={() => {
                         navigate(-1)
                     }} cursor={"pointer"} />
                     <Text fontSize="sm">Go Back</Text>
                 </HStack>
-                <Heading as="h1" size="xl" mb="4">
-                    Create an NFT
-                </Heading>
-                <button onClick={() => mintNFT("")}>Mint NFT </button>
-                <Formik
-                    initialValues={{ name: '', description: '' }}
-                    validationSchema={Yup.object({
-                        name: Yup.string()
-                            .max(15, 'Must be 15 characters or less')
-                            .required('Required'),
-                        description: Yup.string()
-                            .max(20, 'Must be 20 characters or less')
-                            .required('Required'),
-                    })}
-                    onSubmit={(values, actions) => {
-                        setNftName(values.name)
-                        setNftDescription(values.description)
-                        createAsset?.()
-                    }}
-                >
-                    {(formik) => (
-                        <form onSubmit={formik.handleSubmit} style={{ width: '60%' }}>
-                            <VStack spacing={10} m="auto">
-                                <FormControl
-                                    isInvalid={!!formik.errors.name && formik.touched.name}
-                                >
-                                    <FormLabel htmlFor="name">Name</FormLabel>
-                                    <Field
-                                        name="name"
-                                        type="text"
-                                        as={Input}
-                                        placeholder="Enter a name for your video"
-                                        w="100%"
-                                    />
-                                    <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
-                                </FormControl>
-                                <FormControl
-                                    isInvalid={
-                                        !!formik.errors.description && formik.touched.description
-                                    }
-                                >
-                                    <FormLabel htmlFor="description">Description</FormLabel>
-                                    <Field
-                                        name="description"
-                                        type="text"
-                                        as={Input}
-                                        placeholder="Enter a description for your video"
-                                        w="100%"
-                                    />
-                                    <FormErrorMessage>{formik.errors.description}</FormErrorMessage>
-                                </FormControl>
-                                <Box
-                                    border="2px dashed"
-                                    borderColor="gray.200"
-                                    p="6"
-                                    rounded="md"
-                                    w="full"
-                                    mx="auto"
-                                    textAlign="center"
-                                >
-                                    {!video ? <VStack mb="4"
-                                        {...getRootProps()}
+
+                <VStack justifyContent="center" alignItems="center" align={"left"} minH="100vh" p="10">
+                    <Heading as="h1" size="xl" mb="4">
+                        Create an NFT
+                    </Heading>
+                    <button onClick={() => mintNFT("")}>Mint NFT </button>
+                    <Formik
+                        initialValues={{ name: '', description: '' }}
+                        validationSchema={Yup.object({
+                            name: Yup.string()
+                                .max(15, 'Must be 15 characters or less')
+                                .required('Required'),
+                            description: Yup.string()
+                                .max(20, 'Must be 20 characters or less')
+                                .required('Required'),
+                        })}
+                        onSubmit={(values, actions) => {
+                            setNftName(values.name)
+                            setNftDescription(values.description)
+                            createAsset?.()
+                        }}
+                    >
+                        {(formik) => (
+                            <form onSubmit={formik.handleSubmit} style={{ width: '60%' }}>
+                                <VStack spacing={10} m="auto">
+                                    <FormControl
+                                        isInvalid={!!formik.errors.name && formik.touched.name}
                                     >
-                                        <input {...getInputProps()} />
-                                        <Icon color="gray.500" border="1px solid" borderColor={"gray.500"} rounded="full" h="8" w="8" as={MdAdd} />
-                                        <Text color="gray.500" fontSize="lg" fontWeight="bold">
-                                            Upload your file
-                                        </Text>
-                                    </VStack> :
-                                        <VStack {...getRootProps()}>
-                                            {videoUrl && <video style={{ height: "30vh", margin: "auto", width: "auto" }} src={videoUrl} width="100%" controls />}
-                                            <Text color="gray.500" fontSize="lg" fontWeight="bold"
-                                            >
-                                                {video.name}
+                                        <FormLabel htmlFor="name">Name</FormLabel>
+                                        <Field
+                                            name="name"
+                                            type="text"
+                                            as={Input}
+                                            placeholder="Enter a name for your video"
+                                            w="100%"
+                                        />
+                                        <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+                                    </FormControl>
+                                    <FormControl
+                                        isInvalid={
+                                            !!formik.errors.description && formik.touched.description
+                                        }
+                                    >
+                                        <FormLabel htmlFor="description">Description</FormLabel>
+                                        <Field
+                                            name="description"
+                                            type="text"
+                                            as={Input}
+                                            placeholder="Enter a description for your video"
+                                            w="100%"
+                                        />
+                                        <FormErrorMessage>{formik.errors.description}</FormErrorMessage>
+                                    </FormControl>
+                                    <Box
+                                        border="2px dashed"
+                                        borderColor="gray.200"
+                                        p="6"
+                                        rounded="md"
+                                        w="full"
+                                        mx="auto"
+                                        textAlign="center"
+                                    >
+                                        {!video ? <VStack mb="4"
+                                            {...getRootProps()}
+                                        >
+                                            <input {...getInputProps()} />
+                                            <Icon color="gray.500" border="1px solid" borderColor={"gray.500"} rounded="full" h="8" w="8" as={MdAdd} />
+                                            <Text color="gray.500" fontSize="lg" fontWeight="bold">
+                                                Upload your file
                                             </Text>
-                                        </VStack>}
-                                </Box>
-                                {progressFormatted && progress !== undefined && (
-                                    <Center w="full">
-                                        <Box w="50%">
-                                            <Progress
-                                                value={progress?.[0]?.progress * 100}
-                                                size="sm"
-                                                colorScheme="teal"
-                                                mb="4"
-                                            />
-                                            <Text textAlign="center">{progressFormatted}</Text>
-                                        </Box>
-                                    </Center>
-                                )}
+                                        </VStack> :
+                                            <VStack {...getRootProps()}>
+                                                {videoUrl && <video style={{ height: "30vh", margin: "auto", width: "auto" }} src={videoUrl} width="100%" controls />}
+                                                <Text color="gray.500" fontSize="lg" fontWeight="bold"
+                                                >
+                                                    {video.name}
+                                                </Text>
+                                            </VStack>}
+                                    </Box>
+                                    {progressFormatted && progress !== undefined && (
+                                        <Center w="full">
+                                            <Box w="50%">
+                                                <Progress
+                                                    value={progress?.[0]?.progress * 100}
+                                                    size="sm"
+                                                    colorScheme="teal"
+                                                    mb="4"
+                                                />
+                                                <Text textAlign="center">{progressFormatted}</Text>
+                                            </Box>
+                                        </Center>
+                                    )}
 
-                                {
-                                    tokenURI ?
-                                        <Button onClick={() => mintNFT(tokenURI)}>
-                                            Mint NFT
-                                        </Button> :
-                                        <Button
-                                            isLoading={createStatus === 'loading'}
-                                            loadingText="Uploading..."
-                                            type="submit" w="100%">
-                                            Submit
-                                        </Button>
+                                    {
+                                        tokenURI ?
+                                            <Button onClick={() => mintNFT(tokenURI)}>
+                                                Mint NFT
+                                            </Button> :
+                                            <Button
+                                                isLoading={createStatus === 'loading'}
+                                                loadingText="Uploading..."
+                                                type="submit" w="100%">
+                                                Submit
+                                            </Button>
 
 
-                                }
-                            </VStack>
-                        </form>
-                    )}
-                </Formik>
-            </VStack>
-
+                                    }
+                                </VStack>
+                            </form>
+                        )}
+                    </Formik>
+                </VStack>
+            </Box>
         </>
     );
 };

@@ -1,4 +1,4 @@
-import { Box, Grid, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Container, Grid, HStack, Skeleton, Stack, Text, VStack } from "@chakra-ui/react"
 import Cards from "../components/Cards"
 import ToggleTheme from "../components/Toggletheme"
 import Navbar from "../components/Navbar"
@@ -54,6 +54,7 @@ const Homecomponent = () => {
         getAllAuctions()
     }, [Contract])
 
+    console.log(auctionitems, "auctionitems")
 
     return (
         <>
@@ -61,6 +62,44 @@ const Homecomponent = () => {
             <Box>
                 <Text fontSize="4xl" textAlign="center" fontWeight="bold" mt="10"></Text>
                 <Grid templateColumns='repeat(1, 1fr)' gap={0} m="auto" w="100%">
+                    {/* make a skeleton */}
+                    {
+                        auctionitems.length === 0 ? (
+                            <Container p={{ base: 5, md: 10 }} maxW="2xl">
+                                <Box
+                                    borderWidth="1px"
+                                    _hover={{ shadow: 'lg' }}
+                                    rounded="md"
+                                    overflow="hidden"
+                                // bg="gray.200"
+                                >
+                                    <Box position="relative" w="100%" h="300px" zIndex="0">
+                                        <Skeleton h="100%" w="100%" />
+                                    </Box>
+                                    <Box p={{ base: 3, sm: 5 }}>
+                                        <VStack align="start" mb={6}>
+                                            <Skeleton h="20px" w="80%" />
+                                            <Skeleton h="16px" w="100%" />
+                                            <Skeleton h="12px" w="60%" />
+                                        </VStack>
+                                        <Stack justify="end" direction={{ base: 'column', sm: 'row' }} spacing={{ base: 2, sm: 0 }}>
+                                            <Button
+                                                textTransform="uppercase"
+                                                lineHeight="inherit"
+                                                rounded="md"
+                                                colorScheme="gray"
+                                                variant="solid"
+                                                size="sm"
+                                                isDisabled
+                                            >
+                                                Place a Bid
+                                            </Button>
+                                        </Stack>
+                                    </Box>
+                                </Box>
+                            </Container>
+                        ) : null
+                    }
                     {auctionitems.map((item: any, index: any) => {
                         return <Cards auctionItem={item} key={index} />
                     })}

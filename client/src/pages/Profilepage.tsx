@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast } from "@chakra-ui/react"
+import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast, Skeleton } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
 import { Contract, followers, following } from "../initializers/ethers"
 import * as React from "react"
@@ -132,21 +132,21 @@ const Profilepage = () => {
                     <Avatar size="2xl" src={'/avatar.png'} />
                     <VStack align={"left"} spacing="2">
                         {/* <Box fontWeight="bold">Fidal Mathew</Box> */}
-                        <Text color="gray.600" fontSize="md">{id?.slice(0,7) + '...' + id?.slice(-6)}</Text>
-                        <Text color="gray.500" fontSize="sm">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
-                        <Text color="gray.500" fontSize="sm">Followers: <chakra.span>50</chakra.span> 
+                        <Text color="" fontSize="md">{id?.slice(0, 7) + '...' + id?.slice(-6)}</Text>
+                        <Text color="" fontSize="sm">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
+                        <Text color="" fontSize="sm">Followers: <chakra.span>50</chakra.span>
                             {/* following */}
                             <chakra.span ml="2">Following: 50</chakra.span>
                         </Text>
-                       {true? <Button size="xs">Follow
-                       </Button>
-                        
-                       :
-                        <Button size="xs">Unfollow</Button>}
+                        {true ? <Button size="xs">Follow
+                        </Button>
+
+                            :
+                            <Button size="xs">Unfollow</Button>}
                     </VStack>
                 </HStack>
                 <Box m={"auto"} p="6" w={{ base: "100vw", xl: "50vw" }}>
-                    <Tabs position="relative" variant="unstyled" isFitted>
+                    <Tabs position="relative" variant="unstyled" isFitted isLazy>
                         <TabList>
                             <Tab>Holdings</Tab>
                             <Tab>In Auction</Tab>
@@ -160,6 +160,52 @@ const Profilepage = () => {
                         <TabPanels>
                             <TabPanel>
                                 {/*  */}
+                                {
+                                    // for no holdings
+                                    holdings.length == 0 ?
+                                        (
+                                            <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0} mb="7">
+                                                <Grid
+                                                    templateRows={{ base: 'auto auto', md: 'auto' }}
+                                                    w="100%"
+                                                    templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
+                                                    p={{ base: 2, sm: 4 }}
+                                                    gap={3}
+                                                    alignItems="center"
+                                                    _hover={{ bg: 'gray.200' }}
+                                                >
+                                                    <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
+                                                        <Skeleton h="20px" w="80%" mb={2} />
+                                                        <Skeleton h="16px" w="100%" />
+                                                    </Box>
+                                                    <HStack
+                                                        spacing={{ base: 0, sm: 3 }}
+                                                        alignItems="center"
+                                                        fontWeight="medium"
+                                                        fontSize={{ base: 'xs', sm: 'sm' }}
+                                                        color="gray.600"
+                                                    >
+                                                        {/* Add any skeleton elements you need */}
+                                                    </HStack>
+                                                    <Stack
+                                                        spacing={2}
+                                                        direction="row"
+                                                        fontSize={{ base: 'sm', sm: 'md' }}
+                                                        justifySelf="flex-end"
+                                                        alignItems="center"
+                                                    >
+                                                        <Button size="sm" leftIcon={<MdMoney />} isDisabled>
+                                                            Bid in Auction
+                                                        </Button>
+                                                        <Button size="sm" leftIcon={<FaEye />} isDisabled>
+                                                            View
+                                                        </Button>
+                                                    </Stack>
+                                                </Grid>
+                                                <Divider m={0} />
+                                            </VStack>
+                                        ) : null
+                                }
                                 {
                                     holdings.map((item: any, index: number) => {
                                         return (
@@ -212,12 +258,56 @@ const Profilepage = () => {
                                                 </Grid>
                                                 <Divider m={0} />
 
-                                            </VStack>)
+                                            </VStack>
+                                        )
                                     })
                                 }
                             </TabPanel>
                             <TabPanel>
                                 {/*  */}
+                                {
+                                    // for no auctions
+                                    auctions.length == 0 ?
+                                        (
+                                            <VStack border="1px solid" borderColor="gray.400" rounded="md" overflow="hidden" spacing={0}>
+                                                <Grid
+                                                    templateRows={{ base: 'auto auto', md: 'auto' }}
+                                                    w="100%"
+                                                    templateColumns={{ base: 'unset', md: '4fr 2fr 2fr' }}
+                                                    p={{ base: 2, sm: 4 }}
+                                                    gap={3}
+                                                    alignItems="center"
+                                                    _hover={{ bg: 'gray.200' }}
+                                                >
+                                                    <Box gridColumnEnd={{ base: 'span 2', md: 'unset' }}>
+                                                        <Skeleton h="20px" w="80%" mb={2} />
+                                                        <Skeleton h="16px" w="100%" />
+                                                    </Box>
+                                                    <HStack
+                                                        spacing={{ base: 0, sm: 3 }}
+                                                        alignItems="center"
+                                                        fontWeight="medium"
+                                                        fontSize={{ base: 'xs', sm: 'sm' }}
+                                                        color="gray.600"
+                                                    >
+                                                        {/* Add any skeleton elements you need */}
+                                                    </HStack>
+                                                    <Stack
+                                                        spacing={2}
+                                                        direction="row"
+                                                        fontSize={{ base: 'sm', sm: 'md' }}
+                                                        justifySelf="flex-end"
+                                                        alignItems="center"
+                                                    >
+                                                        <Button size="sm" leftIcon={<FaEye />} isDisabled>
+                                                            View Auction
+                                                        </Button>
+                                                    </Stack>
+                                                </Grid>
+                                                <Divider m={0} />
+                                            </VStack>
+                                        ) : null
+                                }
                                 {
                                     auctions.map((item: any, index: number) => {
                                         return (
