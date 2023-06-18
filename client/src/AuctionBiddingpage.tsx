@@ -307,15 +307,8 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                                     ) : (
                                         <></>
                                     )
-                                ) : s.address === auctionItem.winner ? (
-                                    <Box mt="5" w={{ base: "100%", lg: "100%" }}>
-                                        <Button w="full" onClick={() => addToHoldings()}>
-                                            {" "}
-                                            Claim prize
-                                        </Button>
-                                    </Box>
                                 ) : (
-                                    s.address === auctionItem.winner ? (
+                                    s.address.toLowerCase() === auctionItem.winner.toLowerCase() ? (
                                         <Box mt="5" w={{ base: "100%", lg: "100%" }}>
                                             <Button w="full" onClick={() => claimPrize()}> Claim prize</Button>
                                         </Box>
@@ -326,7 +319,7 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                                     )
                                 )
                             ) : (
-                                <Box mt="10" w={{ base: "100%", lg: "100%" }}>
+                                <Box mt="5" w={{ base: "100%", lg: "100%" }}>
                                     <Formik
                                         initialValues={{ amount: "" }}
                                         validationSchema={Yup.object({
