@@ -196,7 +196,7 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
             <VStack p="10" pl="10" pr="10">
                 <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-around" w="60%" h={{ base: "100vh", md: "30vh" }} alignItems="flex-start" spacing={"10"}>
                     <Flex w={{ base: "full", lg: "45%" }} shadow={"xl"}>
-                        <AccessPlayer playbackId={auctionItem.playbackId} />
+                        <AccessPlayer playbackId={auctionItem.playbackId} tokenId={auctionItem.tokenId} />
                     </Flex>
                     {/* <Center borderRadius="md" overflow="hidden" w="100%" h="full" bg="gray.400">
                             <Text fontSize="3xl" fontWeight={"semibold"}>{auctionItem.name}</Text>

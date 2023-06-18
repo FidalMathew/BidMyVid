@@ -27,7 +27,7 @@ const Cards = ({ auctionItem }) => {
                     bg={useColorModeValue('white', 'gray.800')}
                 >
                     <Box position="relative" w="100%" h="auto" zIndex={"0"}>
-                        <AccessPlayer playbackId={auctionItem.playbackId} />
+                        <AccessPlayer playbackId={auctionItem.playbackId} tokenId={auctionItem.tokenId} />
                     </Box>
                     <Box p={{ base: 3, sm: 5 }}>
                         <VStack align={"start"} mb={6}>

@@ -17,18 +17,26 @@ const opts = {
 };
 
 
-const contractAddress = "0x88AF2064b973cb6918363b9B00Ee61A5Cb6871a8"
+const contractAddress = "0xB0959E1F19713D0F948e4949B1cBA871fFFB904f"
 
 const checkNFTs = async (userAddress, tokenId) => {
 
     const nfts = await alchemy.nft.getNftsForOwner(userAddress);
     // Print NFTs
     console.log(nfts);
-    nfts.ownedNfts.map((nft) => {
-        if (nft.tokenId === tokenId) return true;
-    })
 
-    return false;
+    let ans = false;
+
+    for (let i = 0; i < nfts.ownedNfts.length; i++) {
+        if (nfts.ownedNfts[i].contract.address === contractAddress.toLowerCase()) {
+            if (String(nfts.ownedNfts[i].tokenId) === String(tokenId)) {
+                ans = true;
+                break;
+            }
+        }
+    }
+
+    return ans;
 }
 
 // console.log(checkNFTs("0xecC6E5aA22E2Bb7aDD9296e5E7113E1A44C4D736", "1"))

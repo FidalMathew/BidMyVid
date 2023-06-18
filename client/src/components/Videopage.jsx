@@ -39,7 +39,7 @@ const Videopage = () => {
                 <VStack spacing={"6"} align={"left"} w="50%">
                     <Box position="relative" h="full" w="auto" rounded="2xl">
                         <Heading mb="6" size="md" textAlign={"center"}>{state?.name}</Heading>
-                        <AccessPlayer playbackId={state?.playbackId} />
+                        <AccessPlayer playbackId={state?.playbackId} tokenId={state?.tokenId} />
                     </Box>
                     {/* created by and avatar in sm size */}
                     <HStack>

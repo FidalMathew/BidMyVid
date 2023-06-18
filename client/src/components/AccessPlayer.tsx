@@ -4,7 +4,7 @@ import authStore from '../stores/authStore';
 import { useEffect } from 'react';
 import axios from 'axios'
 
-export const AccessPlayer = ({ playbackId }) => {
+export const AccessPlayer = ({ playbackId, tokenId }) => {
 
     const [accessKey, setAccessKey] = useState("")
     const [sig, setSig] = useState("")
@@ -26,7 +26,8 @@ export const AccessPlayer = ({ playbackId }) => {
             // console.log("6666666666666666")
             // console.log(access)
             try {
-                const res = await axios.post(backend_url + "/api/check-access", { accessKey: access })
+                console.log("accessKey: ", access + "$" + tokenId)
+                const res = await axios.post(backend_url + "/api/check-access", { accessKey: access + "$" + tokenId })
                 console.log(res.status)
             } catch (error) {
                 console.log(error)

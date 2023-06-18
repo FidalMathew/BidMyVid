@@ -18,11 +18,14 @@ router.post('/api/check-access', async (req, res) => {
     const splitedValues = accessKey.split("$")
     // console.log(splitedValues)
     const existingObject = await StealVideo.findOne({ wallet: splitedValues[0], signature: splitedValues[1] })
+    const tokenId = splitedValues[2]
+    console.log(splitedValues[0], splitedValues[1], tokenId)
+
     if (existingObject) {
+
       try {
-        const tokenId = splitedValues[2]
-        console.log(tokenId)
         const check = await checkNFTs(splitedValues[0], tokenId)
+
         if (check == false)
           return res.status(422).json({ message: "Invalid Access" })
 
