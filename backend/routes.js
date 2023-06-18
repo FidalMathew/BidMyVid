@@ -6,6 +6,7 @@ const requireAuth = require('./middleware/requireAuth')
 const mongoose = require('mongoose')
 const StealVideo = require("./models/steal")
 
+const { checkNFTs } = require('./middleware/checkNFTs')
 // Auth
 router.get('/api/nonce', authController.Nonce)
 router.post('/api/verify', authController.Verify)
@@ -18,7 +19,19 @@ router.post('/api/check-access', async (req, res) => {
     // console.log(splitedValues)
     const existingObject = await StealVideo.findOne({ wallet: splitedValues[0], signature: splitedValues[1] })
     if (existingObject) {
-      return res.status(200).json("Data Verified succesfully")
+      try {
+        const tokenId = splitedValues[2]
+        console.log(tokenId)
+        const check = await checkNFTs(splitedValues[0], tokenId)
+        if (check == false)
+          return res.status(422).json({ message: "Invalid Access" })
+
+        return res.status(200).json("Data Verified succesfully")
+
+      } catch (error) {
+        return res.status(422).json({ message: "Invalid Access" })
+      }
+
     } else {
       return res.status(422).json({ message: "Invalid Access" })
     }
@@ -31,14 +44,5 @@ router.post('/api/check-access', async (req, res) => {
 
 })
 
-// const frontendRoutes = ['/', '/login', '/create']
-
-// frontendRoutes.forEach((route) => {
-//   router.get(route, (_, res) => {
-//     fs.readFile(__dirname + '/index.html', 'utf8', (_, text) => {
-//       res.send(text)
-//     })
-//   })
-// })
 
 module.exports = router;

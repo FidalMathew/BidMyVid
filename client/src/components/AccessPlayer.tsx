@@ -39,6 +39,7 @@ export const AccessPlayer = ({ playbackId }) => {
 
     // const playbackId = "dd06al7r1jqniyhf"
     // console.log("accessKey: ", accessKey)
+    console.log("SAAAAAAAAAAAAAA ", playbackId, accessKey)
     return (<>{
         accessKey ? <Player playbackId={playbackId} accessKey={accessKey} /> : <div>Access Key is not available</div>
     }

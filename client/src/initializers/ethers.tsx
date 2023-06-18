@@ -4,7 +4,7 @@ import contractABI from './contractABI.json'
 export const provider = new ethers.providers.Web3Provider(window.ethereum)
 export const signer = provider.getSigner()
 
-const contractAddress = "0x88AF2064b973cb6918363b9B00Ee61A5Cb6871a8"
+const contractAddress = "0xB0959E1F19713D0F948e4949B1cBA871fFFB904f"
 export const Contract = new ethers.Contract(contractAddress, contractABI, signer)
 
 

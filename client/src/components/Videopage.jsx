@@ -39,18 +39,7 @@ const Videopage = () => {
                 <VStack spacing={"6"} align={"left"} w="50%">
                     <Box position="relative" h="full" w="auto" rounded="2xl">
                         <Heading mb="6" size="md" textAlign={"center"}>{state?.name}</Heading>
-                        <AccessPlayer playbackId={state?.image} />
-                        <Button
-                            position="absolute"
-                            colorScheme='gray'
-                            variant={"solid"}
-                            top="50%"
-                            left="50%"
-                            transform="translate(-50%, -50%)"
-                            leftIcon={<AiFillEye />}
-                        >
-                            Stake to reveal
-                        </Button>
+                        <AccessPlayer playbackId={state?.playbackId} />
                     </Box>
                     {/* created by and avatar in sm size */}
                     <HStack>

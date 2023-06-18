@@ -38,13 +38,15 @@ const Navbar = () => {
         const fetchUserNotifications = async () => {
             const res = await fetchNotifs(s.address);
             console.log(res)
+            let arr = []
             res?.map((notif) => {
                 console.log(notif)
-                setNotifications([...notifications, { message: notif.message, cta: notif.cta, icon: notif.icon }])
+                arr.push({ message: notif.message, cta: notif.cta, icon: notif.icon })
             })
+            setNotifications(arr)
         }
         fetchUserNotifications();
-    }, []);
+    }, [s.address]);
 
     return (
         <Box
@@ -88,7 +90,7 @@ const Navbar = () => {
                                         >
                                             <Stack spacing={0} direction="row" alignItems="center">
                                                 <Flex p={4}>
-                                                    <Avatar size="md" name={notification.userName} src={notification.userAvatar} />
+                                                    <Avatar size="md" name={notification.message} src={notification.icon} />
                                                 </Flex>
                                                 <Flex direction="column" p={2}>
                                                     <Text
@@ -100,7 +102,7 @@ const Navbar = () => {
                                                         color={useColorModeValue('gray.400', 'gray.200')}
                                                         fontSize={{ base: 'sm', sm: 'md' }}
                                                     >
-                                                        {notification.dateTime}
+                                                        {notification.message}
                                                     </Text>
                                                 </Flex>
                                             </Stack>

@@ -206,7 +206,6 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
         <>
             <Box minH="100vh">
 
-
                 <VStack justifyContent="center" alignItems="center" align={"left"} minH="90vh" maxW="5xl" m="auto">
                     <Heading size="xl" mb="4">
                         Create an NFT
