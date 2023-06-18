@@ -18,7 +18,8 @@ import authStore from './stores/authStore';
 import { useEffect } from 'react';
 import Videopage from './components/Videopage';
 import Profilepage from './pages/Profilepage';
-import Earning from './pages/Earning';
+// import Earning from './pages/Transactions';
+import Transactions from './pages/Transactions';
 import AuctionBiddingpage from './AuctionBiddingpage';
 import Notifications from './pages/Notifications';
 
@@ -65,7 +66,7 @@ function App() {
           <Route path="/create" element={<RequireAuth element={<Create apiKey={VITE_PINATA_API_KEY} secretKey={VITE_PINATA_SECRET_API_KEY} />} />} />
           <Route path="/videos/:id" element={<RequireAuth element={<Videopage />} />} />
           <Route path="/profile/:id" element={<RequireAuth element={<Profilepage />} />} />
-          <Route path="/earning" element={<RequireAuth element={<Earning polyKey={polybaseKey} />} />} />
+          <Route path="/transactions" element={<RequireAuth element={<Transactions polyKey={polybaseKey} />} />} />
           <Route path="/bid/:id" element={<RequireAuth element={<AuctionBiddingpage polyKey={polybaseKey} />} />} />
           <Route path="/notification" element={<RequireAuth element={<Notifications />} />} />
         </Routes>

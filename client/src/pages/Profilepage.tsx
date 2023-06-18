@@ -1,13 +1,12 @@
 import { Avatar, Box, Grid, HStack, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, Text, VStack, useColorModeValue, Link as ChakraLink, chakra, Flex, Icon, Stack, Divider, Button, useToast, Skeleton, Heading } from "@chakra-ui/react"
 import Navbar from "../components/Navbar"
-import { Contract, followers, following, optIn, optOut, sendNotification } from "../initializers/ethers"
+import { Contract, followers, following, fromWei, optIn, optOut, sendNotification } from "../initializers/ethers"
 import * as React from "react"
 import authStore from "../stores/authStore"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { IconType } from "react-icons"
 import { FaRegComment, FaRegHeart, FaRegEye, FaEye } from 'react-icons/fa';
 import { MdMoney } from "react-icons/md"
-
 const Profilepage = () => {
 
     const s = authStore()
@@ -105,6 +104,27 @@ const Profilepage = () => {
         }
     }, [id, s.address])
 
+
+
+    const [earnings, setEarnings] = React.useState(0)
+
+    React.useEffect(() => {
+        const getEarnings = async (address: string) => {
+            try {
+                const res = await Contract.getEarnings(address)
+                console.log("sadsadas ", fromWei(res))
+
+                const earn = fromWei(res)
+                setEarnings(earn)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        if (id)
+            getEarnings(id)
+    }, [id])
+
     const [auctionLoading, setAuctionLoading] = React.useState(false)
 
     const offerAuction = async (tokenId: number) => {
@@ -156,7 +176,7 @@ const Profilepage = () => {
                     <VStack align={"left"} spacing="2">
                         {/* <Box fontWeight="bold">Fidal Mathew</Box> */}
                         <Text fontSize="md">{id?.slice(0, 7) + '...' + id?.slice(-6)}</Text>
-                        <Text fontSize="sm">Your Earning: <chakra.span>0.0001 ETH</chakra.span> </Text>
+                        <Text fontSize="sm">Your Earning: <chakra.span>{earnings} ETH</chakra.span> </Text>
 
 
                         <Text fontSize="sm">Followers: <chakra.span>{userfollowers.length}</chakra.span>

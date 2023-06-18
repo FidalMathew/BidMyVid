@@ -132,8 +132,8 @@ const Navbar = () => {
                         <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/create')}>
                             Create
                         </Button>
-                        <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/earning')}>
-                            Earning
+                        <Button colorScheme="teal" variant="outline" size="sm" onClick={() => navigate('/transactions')}>
+                            Transactions
                         </Button>
                         <Menu>
                             <MenuButton as={Button} size="sm" px={0} py={0} rounded="full">
@@ -149,7 +149,7 @@ const Navbar = () => {
                                     <Text fontWeight="500" >Profile</Text>
                                 </MenuItem>
                                 <MenuDivider />
-                                <MenuItem onClick={()=>logout()}>
+                                <MenuItem onClick={() => logout()}>
                                     <Text fontWeight="500">Logout</Text>
                                 </MenuItem>
                             </MenuList>
