@@ -23,9 +23,9 @@ app.use(Session({
 }));
 
 app.use(router);
-// app.get('/', (req, res) => {
-//     res.send('Hello World!');
-// })
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+})
 
 // app.post('/api/check-access', (req, res) => {
 
