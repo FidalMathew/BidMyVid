@@ -44,16 +44,14 @@ const Profilepage = () => {
                 console.log(item.owner.toLowerCase(), "debugging  ")
                 if (item.owner.toLowerCase() === id) {
                     let values = {
-                        biddable: item.biddable,
                         bids: Number(item.bids._hex),
                         description: item.description,
                         endTime: convertDateAndTime(item.endTime._hex),
-                        image: item.image,
+                        playbackId: item.playbackId,
                         live: item.live,
                         name: item.name,
                         owner: item.owner,
                         price: Number(item.price),
-                        sold: item.sold,
                         tokenId: Number(item.tokenId),
                         winner: item.winner,
                     }
@@ -106,11 +104,11 @@ const Profilepage = () => {
         setAuctionLoading(true)
         try {
 
-            const res = await Contract.offerAuction(tokenId, true);
+            const res = await Contract.offerAuction(tokenId);
             await res.wait()
             setUpdate(!update)
 
-            sendNotification(s.address)
+            sendNotification(s.address, tokenId)
             // console.log(res)
             toast({
                 title: "Success",

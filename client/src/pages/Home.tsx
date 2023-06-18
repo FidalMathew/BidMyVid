@@ -36,23 +36,21 @@ const Homecomponent = () => {
                     if (item.live) {
 
                         let values = {
-                            biddable: item.biddable,
                             bids: Number(item.bids._hex),
                             description: item.description,
                             endTime: convertDateAndTime(item.endTime._hex),
-                            image: item.image,
+                            playbackId: item.playbackId,
                             live: item.live,
                             name: item.name,
                             owner: item.owner,
                             price: Number(item.price),
-                            sold: item.sold,
                             tokenId: Number(item.tokenId),
                             winner: item.winner,
                         }
                         arr.push(values);
                     }
                 })
-                console.log(arr)
+                console.log("-------------------------", arr)
                 setAuctionItems(arr)
             } catch (err) {
                 console.log(err)
@@ -112,9 +110,9 @@ const Homecomponent = () => {
                             ))
                         )
                     }
-                    
+
                     {
-                        fetchAuctionLoading==false && auctionitems.length === 0 && (
+                        fetchAuctionLoading == false && auctionitems.length === 0 && (
                             <Text fontSize="4xl" textAlign="center" fontWeight="bold" mt="10">No Auctions</Text>
                         )
                     }

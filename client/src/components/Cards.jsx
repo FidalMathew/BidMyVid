@@ -27,24 +27,7 @@ const Cards = ({ auctionItem }) => {
                     bg={useColorModeValue('white', 'gray.800')}
                 >
                     <Box position="relative" w="100%" h="auto" zIndex={"0"}>
-                        {/* <Image
-                        style={{ filter: "blur(8px)" }}
-                        src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80"
-                        objectFit="cover"
-                        w="100%"
-                    /> */}
-                        <AccessPlayer playbackId={auctionItem.image} />
-                        {/* <Button
-                            position="absolute"
-                            colorScheme='gray'
-                            variant={"outline"}
-                            top="50%"
-                            left="50%"
-                            transform="translate(-50%, -50%)"
-                            leftIcon={<AiFillEye />}
-                        >
-                            Stake to reveal
-                        </Button> */}
+                        <AccessPlayer playbackId={auctionItem.playbackId} />
                     </Box>
                     <Box p={{ base: 3, sm: 5 }}>
                         <VStack align={"start"} mb={6}>

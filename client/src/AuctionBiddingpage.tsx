@@ -72,16 +72,15 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                 console.log(item)
 
                 let values = {
-                    biddable: item.biddable,
+
                     bids: Number(item.bids._hex),
                     description: item.description,
                     endTime: convertDateAndTime(item.endTime._hex),
-                    image: item.image,
+                    playbackId: item.playbackId,
                     live: item.live,
                     name: item.name,
                     owner: item.owner,
                     price: Number(item.price),
-                    sold: item.sold,
                     tokenId: Number(item.tokenId),
                     winner: item.winner,
                     ended: ((new Date(convertDateAndTime(item.endTime._hex)) < new Date()) ? true : false)
@@ -158,6 +157,24 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
         }
     }
 
+    const addToHoldings = async () => {
+        try {
+            const res = await Contract.backToItem(id);
+            await res.wait();
+            console.log(res);
+            Toast(
+                {
+                    title: "Successfully added to holdings",
+                    status: "success",
+                    duration: 5000,
+                }
+            )
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
     if (auctionItem.live === false) {
         return (
             <Center h="100vh">
@@ -179,7 +196,7 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
             <VStack p="10" pl="10" pr="10">
                 <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-around" w="60%" h={{ base: "100vh", md: "30vh" }} alignItems="flex-start" spacing={"10"}>
                     <Flex w={{ base: "full", lg: "45%" }} shadow={"xl"}>
-                        <AccessPlayer playbackId={auctionItem.image} />
+                        <AccessPlayer playbackId={auctionItem.playbackId} />
                     </Flex>
                     {/* <Center borderRadius="md" overflow="hidden" w="100%" h="full" bg="gray.400">
                             <Text fontSize="3xl" fontWeight={"semibold"}>{auctionItem.name}</Text>
@@ -211,9 +228,27 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                             {/* <Text fontSize="sm">Auction Ends at: {auctionItem.endTime}</Text> */}
                             <Text fontSize="md">Current Bid: <chakra.span fontWeight={"semibold"}>{fromWei(auctionItem.price)}</chakra.span>  ETH</Text>
                             {auctionItem.ended ? (
-                                <Box mt="10" w={{ base: "100%", lg: "100%" }}>
-                                    <Button w="full" onClick={() => claimPrize}> Claim prize</Button>
-                                </Box>
+
+                                auctionItem.bids === 0 ? (
+
+                                    s.address === auctionItem.owner ? (
+                                        <Box mt="5" w={{ base: "100%", lg: "100%" }}>
+                                            <Button w="full" onClick={() => claimPrize()}> Add to Holdings</Button>
+                                        </Box>
+                                    ) : (
+                                        <></>
+                                    )
+                                ) : (
+                                    s.address === auctionItem.winner ? (
+                                        <Box mt="5" w={{ base: "100%", lg: "100%" }}>
+                                            <Button w="full" onClick={() => addToHoldings()}> Claim prize</Button>
+                                        </Box>
+                                    ) : (
+                                        <>
+                                            Wait for the winner to claim the prize
+                                        </>
+                                    )
+                                )
                             ) : (
                                 <Box mt="10" w={{ base: "100%", lg: "100%" }}>
                                     <Formik
@@ -310,10 +345,10 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                                         )
                                     })
                                 }
-                                <Tr>
+                                {/* <Tr>
                                     <Td>0xA1008b78e3...Eb6F1592C101cD</Td>
                                     <Td isNumeric textAlign={"right"}>25.4</Td>
-                                </Tr>
+                                </Tr> */}
 
                             </Tbody>
                         </Table>

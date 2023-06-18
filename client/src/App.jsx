@@ -6,7 +6,6 @@ import {
   createReactClient,
   studioProvider,
 } from '@livepeer/react';
-// import { Livepeer } from './pages/Livepeer';
 // import { CreateAndViewAsset } from './components/CreateAndViewAsset';
 // import { AccessPlayer } from './pages/AccessPlayer';
 // import Profile from './pages/Profile';

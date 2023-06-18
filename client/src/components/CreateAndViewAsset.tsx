@@ -19,7 +19,6 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
     const [nftName, setNftName] = useState<string | undefined>();
     const [nftDescription, setNftDescription] = useState<string | undefined>();
     const [videoUrl, setVideoUrl] = useState("");
-    const [tokenURI, setTokenURI] = useState("");
     const toast = useToast()
     const navigate = useNavigate()
 
@@ -96,15 +95,15 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
             console.log(asset)
             if (!asset || !asset[0] || !asset[0].playbackUrl) return;
 
-            const image = asset[0].playbackId
+            const playbackId = asset[0].playbackId
             let price: number = 0.002;
             const listingPrice = await Contract.getListingPrice()
             console.log(listingPrice.toString())
-            console.log(nftName, nftDescription, image, tokenURI, toWei(price))
+            console.log(nftName, nftDescription, playbackId, tokenURI, toWei(price))
 
             const tx = await Contract.createAuction(
                 nftName, nftDescription,
-                image,
+                playbackId,
                 tokenURI,
                 toWei(price),
                 {
@@ -169,9 +168,8 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                         duration: 9000,
                         isClosable: true,
                     })
-                    // mintNFT(tokenURI, s.address)   
+
                     mintNFT(tokenURI);
-                    setTokenURI(tokenURI)
 
                 } catch (error) {
                     console.log("JSON to IPFS: ")
@@ -207,21 +205,20 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
     return (
         <>
             <Box minH="100vh">
-    
+
 
                 <VStack justifyContent="center" alignItems="center" align={"left"} minH="90vh" maxW="5xl" m="auto">
                     <Heading size="xl" mb="4">
                         Create an NFT
                     </Heading>
-                    <button onClick={() => mintNFT("")}>Mint NFT </button>
                     <Formik
                         initialValues={{ name: '', description: '' }}
                         validationSchema={Yup.object({
                             name: Yup.string()
-                                .max(15, 'Must be 15 characters or less')
+                                .max(20, 'Must be 20 characters or less')
                                 .required('Required'),
                             description: Yup.string()
-                                .max(20, 'Must be 20 characters or less')
+                                .max(50, 'Must be 50 characters or less')
                                 .required('Required'),
                         })}
                         onSubmit={(values, actions) => {
@@ -300,21 +297,12 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                                             </Box>
                                         </Center>
                                     )}
-
-                                    {
-                                        tokenURI ?
-                                            <Button onClick={() => mintNFT(tokenURI)}>
-                                                Mint NFT
-                                            </Button> :
-                                            <Button
-                                                isLoading={createStatus === 'loading'}
-                                                loadingText="Uploading..."
-                                                type="submit" w="100%">
-                                                Submit
-                                            </Button>
-
-
-                                    }
+                                    <Button
+                                        isLoading={createStatus === 'loading'}
+                                        loadingText="Uploading..."
+                                        type="submit" w="100%">
+                                        Submit & Mint
+                                    </Button>
                                 </VStack>
                             </form>
                         )}

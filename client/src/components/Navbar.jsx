@@ -23,37 +23,29 @@ import ToggleTheme from './Toggletheme';
 import { useNavigate, Link } from 'react-router-dom';
 import authStore from '../stores/authStore';
 import { FiBell } from 'react-icons/fi';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { GoPrimitiveDot } from 'react-icons/go';
+import { fetchNotifs } from '../initializers/ethers';
 
-const notifications = [
-    {
-      notification: `It's <span style="font-weight: 600">Dan Abrahmov's</span> birthday. Wish him well!`,
-      dateTime: '2 days ago',
-      userName: 'Dan Abrahmov',
-      userAvatar: 'https://bit.ly/dan-abramov',
-      isOnline: true
-    },
-    {
-      notification: `<span style="font-weight: 600">Kent Dodds</span> liked your photo.`,
-      dateTime: 'yesterday',
-      userName: 'Kent Dodds',
-      userAvatar: 'https://bit.ly/kent-c-dodds',
-      isOnline: true
-    },
-    {
-      notification: `<span style="font-weight: 600">Jena Karlis</span> registered new client as <span style="font-weight: 600">Trilia</span>.`,
-      dateTime: '4 days ago',
-      userName: 'Jena Karlis',
-      userAvatar:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=334&q=80',
-      isOnline: false
-    }
-  ];
 
 const Navbar = () => {
     const navigate = useNavigate()
     const s = authStore();
+
+    const [notifications, setNotifications] = useState([]);
+
+    useEffect(() => {
+        const fetchUserNotifications = async () => {
+            const res = await fetchNotifs(s.address);
+            console.log(res)
+            res?.map((notif) => {
+                console.log(notif)
+                setNotifications([...notifications, { message: notif.message, cta: notif.cta, icon: notif.icon }])
+            })
+        }
+        fetchUserNotifications();
+    }, []);
+
     return (
         <Box
             py="2"
@@ -67,12 +59,6 @@ const Navbar = () => {
         >
             <Container maxW="1280px" px={4} mx="auto">
                 <HStack spacing={4}>
-                    {/* <Image
-                        alt="dev logo"
-                        w={'auto'}
-                        h={12}
-                        src="https://dev-to-uploads.s3.amazonaws.com/uploads/logos/resized_logo_UQww2soKuUsjaOGNB38o.png"
-                    /> */}
                     <Link to="/">
                         <Text w={'auto'} fontSize="2xl" fontWeight="bold" color="teal.500">BidMyVid</Text>
                     </Link>
@@ -93,12 +79,12 @@ const Navbar = () => {
                                 as={MenuList}
                             >
                                 {notifications.map((notification, index) => (
-                                    <Box key={index} as={MenuItem} style={{zIndex: '10'}}>
+                                    <Box key={index} as={MenuItem} style={{ zIndex: '10' }}>
                                         <Flex
                                             w="100%"
                                             justify="space-between"
                                             alignItems="center"
-                                            // _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
+                                        // _hover={{ bg: useColorModeValue('gray.200', 'gray.700') }}
                                         >
                                             <Stack spacing={0} direction="row" alignItems="center">
                                                 <Flex p={4}>

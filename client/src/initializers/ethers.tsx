@@ -4,7 +4,7 @@ import contractABI from './contractABI.json'
 export const provider = new ethers.providers.Web3Provider(window.ethereum)
 export const signer = provider.getSigner()
 
-const contractAddress = "0xA0b49A74F0140883d4bBfef3Ec8D0bdA682528A2"
+const contractAddress = "0x88AF2064b973cb6918363b9B00Ee61A5Cb6871a8"
 export const Contract = new ethers.Contract(contractAddress, contractABI, signer)
 
 
@@ -53,19 +53,19 @@ export const optOut = async (chAddress: string, usAddress: string) => {
     })
 }
 
-export const sendNotification = async (address: string) => {
+export const sendNotification = async (address: string, tokenId: number) => {
     const apiResponse = await PushAPI.payloads.sendNotification({
         signer: signer,
         type: 1, // broadcast
         identityType: 2, // direct payload
         notification: {
-            title: `[SDK-TEST] notification TITLE:`,
-            body: `[sdk-test] notification BODY`
+            title: `${address} started a new auction!`,
+            body: `${address} started a new auction for tokenId: ${tokenId}! Bid now`
         },
         payload: {
-            title: `[sdk-test] payload title`,
-            body: `sample msg body`,
-            cta: '',
+            title: `${address} started a new auction!`,
+            body: `${address} started a new auction for tokenId: ${tokenId}! Bid now`,
+            cta: `/bid/${tokenId}`,
             img: ''
         },
         channel: `eip155:5:${address}`, // your channel address
