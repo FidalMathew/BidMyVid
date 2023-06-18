@@ -13,10 +13,10 @@ export const AccessPlayer = ({ playbackId, tokenId }) => {
 
 
     let access;
-    const backend_url = "http://localhost:5000"
+    const backend_url = "https://hack-fs-ethglobal-production.up.railway.app"
     useEffect(() => {
         if (s.address && s.signatureStore) {
-            access = s.address + "$" + s.signatureStore
+            access = s.address + "$" + s.signatureStore + "$" + tokenId
 
             if (!accessKey) {
                 setAccessKey(access)

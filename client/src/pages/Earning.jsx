@@ -29,7 +29,7 @@ const Earning = ({ polyKey }) => {
   useEffect(() => {
     const func = async () => {
       try {
-        const res = await db.collection("BidKaro").where("buyer", "==", s.address).get();
+        const res = await db.collection("BidMyVid").where("buyer", "==", s.address).get();
         // console.log(res.data[0]?.data)
         setTransactions(res.data)
       }

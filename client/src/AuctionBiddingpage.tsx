@@ -169,17 +169,8 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
     const claimPrize = async () => {
         const bid = auctionItem.bids;
         try {
-            const { data } = await db.collection("BidKaro").get();
-            const saveDb = await db
-                .collection("BidKaro")
-                .create([
-                    String(data.length + 1),
-                    String(id),
-                    String(auctionItem.price),
-                    String(new Date()),
-                    String(auctionItem.winner),
-                    String(auctionItem.owner),
-                ]);
+            const { data } = await db.collection('BidMyVid').get();
+            const saveDb = await db.collection('BidMyVid').create([String(data.length + 1), String(id), String(auctionItem.price), String(new Date()), String(auctionItem.winner), String(auctionItem.owner)])
             const res = await Contract.claimPrize(id, bid - 1);
             await res.wait();
             // sucessfllly claimed
@@ -230,7 +221,7 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                 <Stack
                     direction={{ base: "column", md: "row" }}
                     justifyContent="space-around"
-                    w={{base: "100%", md: "60%"}}
+                    w={{ base: "100%", md: "60%" }}
                     h={{ base: "100vh", md: "30vh" }}
                     alignItems="flex-start"
                     spacing={"10"}
@@ -301,11 +292,8 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                                 auctionItem.bids === 0 ? (
                                     s.address === auctionItem.owner ? (
                                         <Box mt="5" w={{ base: "100%", lg: "100%" }}>
-                                            <Button w="full" onClick={() => claimPrize()}>
-                                                {" "}
-                                                Add to Holdings
-                                            </Button>
-                                        </Box>
+                                            <Button w="full" onClick={() => addToHoldings()}> Add to Holdings</Button>
+                                        </Box >
                                     ) : (
                                         <></>
                                     )
@@ -317,7 +305,15 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                                         </Button>
                                     </Box>
                                 ) : (
-                                    <>Wait for the winner to claim the prize</>
+                                    s.address === auctionItem.winner ? (
+                                        <Box mt="5" w={{ base: "100%", lg: "100%" }}>
+                                            <Button w="full" onClick={() => claimPrize()}> Claim prize</Button>
+                                        </Box>
+                                    ) : (
+                                        <>
+                                            Wait for the winner to claim the prize
+                                        </>
+                                    )
                                 )
                             ) : (
                                 <Box mt="10" w={{ base: "100%", lg: "100%" }}>
@@ -366,9 +362,9 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                                     </Formik>
                                 </Box>
                             )}
-                        </VStack>
-                    </Box>
-                </Stack>
+                        </VStack >
+                    </Box >
+                </Stack >
                 {/* {
                     auctionItem.ended ? (
                         <>
@@ -405,13 +401,13 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                         </Box>
                     )
                 } */}
-                <VStack w="full" p="10" spacing="0">
+                < VStack w="full" p="10" spacing="0" >
                     {/* <Heading size="md" textAlign="center" color={
                         useColorModeValue('gray.700', 'gray.200')
                     }>Bids for this video
                         <chakra.span> ({auctionItem.bids}) </chakra.span>
                     </Heading> */}
-                    <TableContainer
+                    < TableContainer
                         mt="7"
                         w={{ base: "100%", lg: "70%" }}
                         maxH={"40vh"}
@@ -420,45 +416,47 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                         borderColor={useColorModeValue("gray.100", "gray.500")}
                         className="bid-table"
                     >
-                        {bidders.length === 0 ? (
-                            <Center h="100px">
-                                <Text fontSize="2xl">No Bids Yet</Text>
-                            </Center>
-                        ) : (
-                            <Table
-                                variant="unstyled"
-                                size={"lg"}
-                                overflow={"scroll"}
-                                overflowY={"hidden"}
-                            >
-                                <Thead>
-                                    <Tr>
-                                        <Th>Bidders</Th>
-                                        <Th isNumeric textAlign={"right"}>
-                                            Amount Bid
-                                        </Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {bidders.map((bidder: any, index: any) => {
-                                        return (
-                                            <Tr key={index}>
-                                                <Td>{bidder.bidder}</Td>
-                                                <Td isNumeric textAlign={"right"}>
-                                                    {fromWei(bidder.amount)}
-                                                </Td>
-                                            </Tr>
-                                        );
-                                    })}
-                                </Tbody>
-                            </Table>
-                        )}
-                    </TableContainer>
-                </VStack>
+                        {
+                            bidders.length === 0 ? (
+                                <Center h="100px">
+                                    <Text fontSize="2xl">No Bids Yet</Text>
+                                </Center>
+                            ) : (
+                                <Table
+                                    variant="unstyled"
+                                    size={"lg"}
+                                    overflow={"scroll"}
+                                    overflowY={"hidden"}
+                                >
+                                    <Thead>
+                                        <Tr>
+                                            <Th>Bidders</Th>
+                                            <Th isNumeric textAlign={"right"}>
+                                                Amount Bid
+                                            </Th>
+                                        </Tr>
+                                    </Thead>
+                                    <Tbody>
+                                        {bidders.map((bidder: any, index: any) => {
+                                            return (
+                                                <Tr key={index}>
+                                                    <Td>{bidder.bidder}</Td>
+                                                    <Td isNumeric textAlign={"right"}>
+                                                        {fromWei(bidder.amount)}
+                                                    </Td>
+                                                </Tr>
+                                            );
+                                        })}
+                                    </Tbody>
+                                </Table>
+                            )
+                        }
+                    </TableContainer >
+                </VStack >
 
                 {/* <Button colorScheme="blue" size="lg" w="50%" mt="10">Place a Bid</Button> */}
-            </VStack>
-        </Box>
+            </VStack >
+        </Box >
     );
 };
 

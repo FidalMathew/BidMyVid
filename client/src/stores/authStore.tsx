@@ -19,7 +19,7 @@ type TAuthStore = {
   nonceStore: string
 }
 
-const backend_url = "http://localhost:5000"
+const backend_url = "https://hack-fs-ethglobal-production.up.railway.app"
 
 let sig = localStorage.getItem("sig")
 

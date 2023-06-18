@@ -75,12 +75,14 @@ const Profilepage = () => {
     React.useEffect(() => {
         const getFollowers = async () => {
             try {
-                const res = await followers(id as string)
+
+                const res = await followers(id)
                 res.subscribers.map((item: any) => {
                     if (item.toLowerCase() === s.address.toLowerCase()) {
                         setOptedIn(true)
                     }
                 })
+                console.log("notif sub ", res.subscribers)
                 setUserFollowers(res.subscribers as string[] || [])
             } catch (error) {
                 console.log(error)
@@ -95,8 +97,12 @@ const Profilepage = () => {
                 console.log(error)
             }
         }
-        getFollowers()
-        getFollowing()
+        if (id) {
+            console.log("address", id)
+            getFollowers()
+            getFollowing()
+
+        }
     }, [id, s.address])
 
     const [auctionLoading, setAuctionLoading] = React.useState(false)
@@ -142,7 +148,7 @@ const Profilepage = () => {
                     id?.toLowerCase() === s.address.toLowerCase() ? (
                         <Text fontSize="md" fontWeight="bold" p="5">Your Profile</Text>
                     ) : (
-                        <Text fontSize="md" fontWeight="bold" p="5">Profile of the user {id?.slice(0,5)+ '...' + id?.slice(-5)}</Text>
+                        <Text fontSize="md" fontWeight="bold" p="5">Profile of the user {id?.slice(0, 5) + '...' + id?.slice(-5)}</Text>
                     )
                 }
                 <HStack spacing={4} p="10">

@@ -62,12 +62,12 @@ function App() {
         <Routes>
           <Route index element={<RequireAuth element={<Home />} />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/create" element={<Create apiKey={VITE_PINATA_API_KEY} secretKey={VITE_PINATA_SECRET_API_KEY} />} />
-          <Route path="/videos/:id" element={<Videopage />} />
-          <Route path="/profile/:id" element={<Profilepage />} />
-          <Route path="/earning" element={<Earning polyKey={polybaseKey} />} />
-          <Route path="/bid/:id" element={<AuctionBiddingpage polyKey={polybaseKey} />} />
-          <Route path="/notification" element={<Notifications />} />
+          <Route path="/create" element={<RequireAuth element={<Create apiKey={VITE_PINATA_API_KEY} secretKey={VITE_PINATA_SECRET_API_KEY} />} />} />
+          <Route path="/videos/:id" element={<RequireAuth element={<Videopage />} />} />
+          <Route path="/profile/:id" element={<RequireAuth element={<Profilepage />} />} />
+          <Route path="/earning" element={<RequireAuth element={<Earning polyKey={polybaseKey} />} />} />
+          <Route path="/bid/:id" element={<RequireAuth element={<AuctionBiddingpage polyKey={polybaseKey} />} />} />
+          <Route path="/notification" element={<RequireAuth element={<Notifications />} />} />
         </Routes>
       </BrowserRouter>
     </LivepeerConfig>
