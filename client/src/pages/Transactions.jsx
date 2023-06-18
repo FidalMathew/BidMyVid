@@ -29,7 +29,7 @@ const Earning = ({ polyKey }) => {
   useEffect(() => {
     const func = async () => {
       try {
-        const res = await db.collection("BidMyVid").where("buyer", "==", s.address).get();
+        const res = await db.collection("BidMyVid").where("owner", "==", s.address).get();
         // console.log(res.data[0]?.data)
         setTransactions(res.data)
       }
@@ -38,18 +38,18 @@ const Earning = ({ polyKey }) => {
       }
 
     }
-    const func2 = async () => {
-      try {
-        const res = await db.collection("BidMyVid").where("owner", "==", s.address).get();
-        // console.log(res.data[0]?.data)
-        setBoughtTrans(res.data)
-      }
-      catch (err) {
-        console.log(err)
-      }
-    }
+    // const func2 = async () => {
+    //   try {
+    //     const res = await db.collection("BidMyVid").where("owner", "==", s.address).get();
+    //     // console.log(res.data[0]?.data)
+    //     setBoughtTrans(res.data)
+    //   }
+    //   catch (err) {
+    //     console.log(err)
+    //   }
+    // }
     func()
-    func2()
+    // func2()
   }, [s])
 
   return (
