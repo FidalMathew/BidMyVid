@@ -89,7 +89,8 @@ const Profilepage = () => {
         const getFollowing = async () => {
             try {
                 const res = await following(id as string)
-                setUserFollowing(res.subscriptions || [])
+                setUserFollowing(res || [])
+                console.log(res, 'following')
             } catch (error) {
                 console.log(error)
             }
@@ -137,6 +138,13 @@ const Profilepage = () => {
         <VStack>
             <Navbar />
             <VStack>
+                {
+                    id?.toLowerCase() === s.address.toLowerCase() ? (
+                        <Text fontSize="md" fontWeight="bold" p="5">Your Profile</Text>
+                    ) : (
+                        <Text fontSize="md" fontWeight="bold" p="5">Profile of the user {id?.slice(0,5)+ '...' + id?.slice(-5)}</Text>
+                    )
+                }
                 <HStack spacing={4} p="10">
                     <Avatar size="2xl" src={'/avatar.png'} />
                     <VStack align={"left"} spacing="2">
@@ -150,12 +158,12 @@ const Profilepage = () => {
                             <chakra.span ml="2">Following: {userfollowing.length}</chakra.span>
                         </Text>
                         {
-                            id === s.address ? (
+                            id?.toLowerCase() !== s.address.toLowerCase() ? (
                                 <>
                                     {!optedIn ?
-                                        <Button size="xs" onClick={() => optIn(id, s.address)}>Follow</Button>
+                                        <Button size="xs" onClick={() => optIn(id as string, s.address)}>Follow</Button>
                                         :
-                                        <Button size="xs" onClick={() => optOut(id, s.address)} >Unfollow</Button>
+                                        <Button size="xs" onClick={() => optOut(id as string, s.address)} >Unfollow</Button>
                                     }
                                 </>
                             ) : (
@@ -184,7 +192,7 @@ const Profilepage = () => {
                                 {
                                     // for no holdings
                                     holdings.length == 0 ? (
-                                        <Heading textAlign={"center"} size="md" mb="4">No holdings</Heading>
+                                        <Heading textAlign={"center"} size="md" mb="4" p="5">No holdings</Heading>
                                     ) : null
                                 }
                                 {
@@ -248,7 +256,7 @@ const Profilepage = () => {
                                 {
                                     // for no auctions
                                     auctions.length == 0 ? (
-                                        <Heading textAlign={"center"} size="md" mb="4">No auctions</Heading>
+                                        <Heading textAlign={"center"} size="md" mb="4" p="5">No auctions</Heading>
                                     ) : null
                                 }
                                 {

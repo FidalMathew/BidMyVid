@@ -120,6 +120,7 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
                 duration: 9000,
                 isClosable: true,
             })
+            navigate("/")
         } catch (err) {
             console.log(err)
             toast({
@@ -206,7 +207,7 @@ export const CreateAndViewAsset = ({ apiKey, secretKey }) => {
         <>
             <Box minH="100vh">
 
-                <VStack justifyContent="center" alignItems="center" align={"left"} minH="90vh" maxW="5xl" m="auto">
+                <VStack justifyContent="center" alignItems="center" align={"left"} minH="90vh" maxW="5xl" m="auto" p="10">
                     <Heading size="xl" mb="4">
                         Create an NFT
                     </Heading>

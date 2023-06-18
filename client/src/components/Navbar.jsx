@@ -37,7 +37,7 @@ const Navbar = () => {
     useEffect(() => {
         const fetchUserNotifications = async () => {
             const res = await fetchNotifs(s.address);
-            console.log(res)
+            console.log(res, 'from useffect notif')
             let arr = []
             res?.map((notif) => {
                 console.log(notif)
@@ -48,6 +48,13 @@ const Navbar = () => {
         fetchUserNotifications();
     }, [s.address]);
 
+    const logout = () => {
+        localStorage.removeItem('sig');
+        navigate('/login');
+        window.location.reload();
+    }
+
+    console.log(notifications, 'notifications')
     return (
         <Box
             py="2"
@@ -80,6 +87,12 @@ const Navbar = () => {
                                 spacing={0}
                                 as={MenuList}
                             >
+                                {
+                                    notifications.length === 0 &&
+                                    <Box as={MenuItem} style={{ zIndex: '10' }} w="100%" h="full">
+                                        <Text p={4} fontWeight="500" textAlign={"center"}>No notifications</Text>
+                                    </Box>
+                                }
                                 {notifications.map((notification, index) => (
                                     <Box key={index} as={MenuItem} style={{ zIndex: '10' }}>
                                         <Flex
@@ -136,8 +149,8 @@ const Navbar = () => {
                                     <Text fontWeight="500" >Profile</Text>
                                 </MenuItem>
                                 <MenuDivider />
-                                <MenuItem>
-                                    <Text fontWeight="500">Disconnect</Text>
+                                <MenuItem onClick={()=>logout()}>
+                                    <Text fontWeight="500">Logout</Text>
                                 </MenuItem>
                             </MenuList>
                         </Menu>

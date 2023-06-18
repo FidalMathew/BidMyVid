@@ -44,8 +44,20 @@ const Cards = ({ auctionItem }) => {
                                 {auctionItem.description}
                             </Text>
                             <Text fontSize={{ base: 'sm', sm: 'xs' }} noOfLines={2}>
-                                by <chakra.span fontWeight="semibold">{auctionItem.owner}</chakra.span> |{' '}
-                                <chakra.span fontWeight="semibold">{auctionItem.endTime}</chakra.span>
+                                by <chakra.span fontWeight="semibold" onClick={()=>navigate(`/profile/${auctionItem.owner}`)} cursor={"pointer"}>{auctionItem.owner.slice(0,6) + "..." + auctionItem.owner.slice(-7)}</chakra.span> |{' '}
+                                <chakra.span fontWeight="semibold">{new Date(auctionItem.endTime).toLocaleDateString('en-us', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                })}</chakra.span>{" "}
+                                <chakra.span>{new Date(auctionItem.endTime).toLocaleTimeString(
+                                    'en-US',
+                                    {
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                        hour12: true,
+                                    }
+                                )}</chakra.span>
                             </Text>
                         </VStack>
                         <Stack
