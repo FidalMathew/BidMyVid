@@ -273,9 +273,19 @@ const AuctionBiddingpage = ({ polyKey }: { polyKey: any }) => {
                                     )}
                                 </HStack>
                                 <Text fontSize="xs" mt="2">
-                                    {new Date(auctionItem.endTime).toLocaleString("en-US", {
-                                        timeZone: "UTC",
-                                    })}
+                                    <chakra.span fontWeight="semibold">{new Date(auctionItem.endTime).toLocaleDateString('en-us', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric',
+                                    })}</chakra.span>{" "}
+                                    <chakra.span>{new Date(auctionItem.endTime).toLocaleTimeString(
+                                        'en-US',
+                                        {
+                                            hour: 'numeric',
+                                            minute: 'numeric',
+                                            hour12: true,
+                                        }
+                                    )}</chakra.span>
                                 </Text>
                             </Flex>
                             <Text>{auctionItem.description}</Text>

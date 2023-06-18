@@ -76,7 +76,7 @@ const Profilepage = () => {
         const getFollowers = async () => {
             try {
 
-                const res = await followers(id)
+                const res = await followers(id as string)
                 res.subscribers.map((item: any) => {
                     if (item.toLowerCase() === s.address.toLowerCase()) {
                         setOptedIn(true)

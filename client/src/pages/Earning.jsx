@@ -1,4 +1,4 @@
-import { Flex, HStack, Icon, chakra, Text, VStack } from "@chakra-ui/react"
+import { Flex, HStack, Icon, chakra, Text, VStack, Heading } from "@chakra-ui/react"
 import { FiArrowLeft } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
 import {
@@ -44,21 +44,12 @@ const Earning = ({ polyKey }) => {
     // Centered text in the middle of the page
     <>
       <Navbar />
-      <Flex minH="100vh" alignItems="center" justifyContent="center" direction={"column"}>
-        {/* <HStack>
-          <Icon as={FiArrowLeft} onClick={() => {
-            navigate(-1)
-          }} cursor={"pointer"} />
-          <Text fontSize="sm">Go Back</Text>
-        </HStack> */}
-        <VStack direction={"column"} spacing={3}>
-          <Text fontSize="5xl">Your Transactions</Text>
-        </VStack>
-        <TableContainer w={{
-          base: "90%",
-          md: "70%",
-        }} m="auto">
-          <Table variant='simple' marginTop={"40px"}>
+      <VStack minH="100vh" direction={"column"}>
+        <Heading mt={10} mb={10} textAlign={"center"}>Earnings</Heading>
+        {
+          transactions.length === 0 ? <Text textAlign={"center"}>No transactions yet</Text> :
+          <TableContainer w={{base: "100%",md: "70%"}}>
+          <Table variant='unstyled' size={"lg"}>
             <Thead>
               <Tr>
                 <Th>NFT ID</Th>
@@ -76,8 +67,8 @@ const Earning = ({ polyKey }) => {
               ))}
             </Tbody>
           </Table>
-        </TableContainer>
-      </Flex>
+        </TableContainer>}
+      </VStack>
     </>
   )
 }

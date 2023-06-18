@@ -115,7 +115,7 @@ const Navbar = () => {
                                                         color={useColorModeValue('gray.400', 'gray.200')}
                                                         fontSize={{ base: 'sm', sm: 'md' }}
                                                     >
-                                                        {notification.message}
+                                                        {notification.message.slice(0, 8) + "...." + notification.message.slice(-8)}
                                                     </Text>
                                                 </Flex>
                                             </Stack>
